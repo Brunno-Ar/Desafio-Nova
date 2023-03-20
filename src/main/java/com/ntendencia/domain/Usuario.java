@@ -1,12 +1,17 @@
 package com.ntendencia.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.ntendencia.domain.enums.SexoUsuario;
 
 @Entity
 public class Usuario implements Serializable {
@@ -16,23 +21,26 @@ public class Usuario implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
-	private String CPF;
-	private String endereco;
+	private String cpfOuCnpj;
+
+	@OneToMany(mappedBy = "usuario")
+	private List<Endereco> enderecos = new ArrayList<>();
+
 	private String dataNascimento;
-	private String sexo;
+
+	private Integer sexo;
 
 	public Usuario() {
 
 	}
 
-	public Usuario(Integer id, String nome, String cPF, String endereco, String dataNascimento, String sexo) {
+	public Usuario(Integer id, String nome, String cpfoucnpj, String dataNascimento, SexoUsuario sexo) {
 		super();
 		this.id = id;
 		this.nome = nome;
-		CPF = cPF;
-		this.endereco = endereco;
+		cpfOuCnpj = cpfoucnpj;
 		this.dataNascimento = dataNascimento;
-		this.sexo = sexo;
+		this.sexo = sexo.getCod();
 	}
 
 	public Integer getId() {
@@ -52,19 +60,11 @@ public class Usuario implements Serializable {
 	}
 
 	public String getCPF() {
-		return CPF;
+		return cpfOuCnpj;
 	}
 
 	public void setCPF(String cPF) {
-		CPF = cPF;
-	}
-
-	public String getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(String endereco) {
-		this.endereco = endereco;
+		cpfOuCnpj = cPF;
 	}
 
 	public String getDataNascimento() {
@@ -75,17 +75,25 @@ public class Usuario implements Serializable {
 		this.dataNascimento = dataNascimento;
 	}
 
-	public String getSexo() {
-		return sexo;
+	public List<Endereco> getEnderecos() {
+		return enderecos;
 	}
 
-	public void setSexo(String sexo) {
-		this.sexo = sexo;
+	public void setEnderecos(List<Endereco> enderecos) {
+		this.enderecos = enderecos;
+	}
+
+	public SexoUsuario getSexo() {
+		return SexoUsuario.toEnum(sexo);
+	}
+
+	public void setSexo(SexoUsuario sexo) {
+		this.sexo = sexo.getCod();
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(CPF, id);
+		return Objects.hash(cpfOuCnpj, id);
 	}
 
 	@Override
@@ -97,7 +105,7 @@ public class Usuario implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Usuario other = (Usuario) obj;
-		return Objects.equals(CPF, other.CPF) && Objects.equals(id, other.id);
+		return Objects.equals(cpfOuCnpj, other.cpfOuCnpj) && Objects.equals(id, other.id);
 	}
 
 }

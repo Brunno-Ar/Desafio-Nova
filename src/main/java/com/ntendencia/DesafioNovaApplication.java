@@ -8,8 +8,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.ntendencia.domain.Cidade;
+import com.ntendencia.domain.Endereco;
 import com.ntendencia.domain.Estado;
 import com.ntendencia.domain.Usuario;
+import com.ntendencia.domain.enums.SexoUsuario;
 import com.ntendencia.repositories.CidadeRepository;
 import com.ntendencia.repositories.EstadoRepository;
 import com.ntendencia.repositories.UsuarioRepository;
@@ -31,8 +33,8 @@ public class DesafioNovaApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		Usuario user1 = new Usuario(1, "Bruno", "123.123.123.23", "casa 10", "03/02/2003", "Masculino");
-		Usuario user2 = new Usuario(2, "Luciana", "122.121.122.21", "casa 11", "08/04/1993", "Feminino");
+		Usuario user1 = new Usuario(1, "Bruno", "123.123.123.23", "03/02/2003", SexoUsuario.MASCULINO);
+		Usuario user2 = new Usuario(2, "Luciana", "122.121.122.21", "08/04/1993", SexoUsuario.FEMININO);
 
 		usuarioRepo.saveAll(Arrays.asList(user1, user2));
 
@@ -48,6 +50,10 @@ public class DesafioNovaApplication implements CommandLineRunner {
 
 		estadoRepo.saveAll(Arrays.asList(est1, est2));
 		cidadeRepo.saveAll(Arrays.asList(c1, c2, c3));
+
+		Endereco enderco1 = new Endereco(null, "Ao lado da estacao", "4817", "casa 10", "Rj", "22783127", user1, c1);
+		Endereco enderco2 = new Endereco(null, "proximo a padaria", "4819", "casa 11", "Rj", "22780160", user2, c1);
+
 	}
 
 }
