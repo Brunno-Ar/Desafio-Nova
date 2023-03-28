@@ -2,14 +2,20 @@ package com.ntendencia.DTO;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
 import com.ntendencia.domain.Usuario;
 
 public class UsuarioDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
+
+	@NotEmpty(message = "Preenchimento Obrigatorio")
+	@Length(min = 4, max = 120, message = "O nome deve ter no minimo 4 caracteres")
 	private String nome;
-	private String cpfOuCnpj;
 
 	public UsuarioDTO() {
 	}
@@ -17,7 +23,6 @@ public class UsuarioDTO implements Serializable {
 	public UsuarioDTO(Usuario obj) {
 		id = obj.getId();
 		nome = obj.getNome();
-		cpfOuCnpj = obj.getCPF();
 	}
 
 	public Integer getId() {
@@ -34,14 +39,6 @@ public class UsuarioDTO implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public String getCpfOuCnpj() {
-		return cpfOuCnpj;
-	}
-
-	public void setCpfOuCnpj(String cpfOuCnpj) {
-		this.cpfOuCnpj = cpfOuCnpj;
 	}
 
 }

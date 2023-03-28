@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.ntendencia.DTO.UsuarioDTO;
 import com.ntendencia.domain.Usuario;
 import com.ntendencia.repositories.UsuarioRepository;
 import com.ntendencia.services.exceptions.DataIntegrityException;
@@ -36,9 +37,11 @@ public class UsuarioService {
 	}
 
 	public Usuario update(Usuario obj) {
-		find(obj.getId());
-		return repository.save(obj);
+		Usuario newObj = find(obj.getId());
+		updateData(newObj, obj);
+		return repository.save(newObj);
 	}
+
 
 	public void delete(Integer id) {
 		find(id);
@@ -56,5 +59,13 @@ public class UsuarioService {
 	public Page<Usuario> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repository.findAll(pageRequest);
+	}
+
+	public Usuario fromDTO(UsuarioDTO objDto) {
+		return new Usuario(objDto.getId(), objDto.getNome(), null, null, null);
+	}
+	
+	private void updateData(Usuario newObj, Usuario obj) {
+		newObj.setNome(obj.getNome());
 	}
 }

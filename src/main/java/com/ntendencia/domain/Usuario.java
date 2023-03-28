@@ -40,7 +40,7 @@ public class Usuario implements Serializable {
 		this.nome = nome;
 		cpfOuCnpj = cpfoucnpj;
 		this.dataNascimento = dataNascimento;
-		this.sexo = sexo.getCod();
+		this.sexo = (sexo == null) ? null : sexo.getCod();
 	}
 
 	public Integer getId() {
