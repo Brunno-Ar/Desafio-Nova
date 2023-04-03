@@ -2,17 +2,32 @@ package com.ntendencia.DTO;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.br.CPF;
+
 public class UsuarioNewDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@NotEmpty(message = "Preenchimento Obrigatorio")
+	@Length(min = 4, max = 120, message = "O nome deve ter no minimo 4 caracteres")
 	private String nome;
-	private String cpfOuCnpj;
+	
+	@NotEmpty(message = "Preenchimento Obrigatorio")
+	@CPF
+	private String cpf;
+	
 	private String dataNascimento;
 	private Integer sexo;
 
 	private String bairro;
+	@NotEmpty(message = "Preenchimento Obrigatorio")
 	private String numero;
+	
+	@NotEmpty(message = "Preenchimento Obrigatorio")
 	private String cep;
+	@NotEmpty(message = "Preenchimento Obrigatorio")
 	private String logradouro;
 	private String complemento;
 
@@ -30,12 +45,12 @@ public class UsuarioNewDTO implements Serializable {
 		this.nome = nome;
 	}
 
-	public String getCpfOuCnpj() {
-		return cpfOuCnpj;
+	public String getcpf() {
+		return cpf;
 	}
 
-	public void setCpfOuCnpj(String cpfOuCnpj) {
-		this.cpfOuCnpj = cpfOuCnpj;
+	public void setcpf(String cpf) {
+		this.cpf = cpf;
 	}
 
 	public String getDataNascimento() {

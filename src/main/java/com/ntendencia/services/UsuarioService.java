@@ -77,7 +77,7 @@ public class UsuarioService {
 	}
 
 	public Usuario fromDTO(UsuarioNewDTO objDto) {
-		Usuario user = new Usuario(null, objDto.getNome(), objDto.getCpfOuCnpj(), objDto.getDataNascimento(),
+		Usuario user = new Usuario(null, objDto.getNome(), objDto.getcpf(), objDto.getDataNascimento(),
 				SexoUsuario.toEnum(objDto.getSexo()));
 
 		Cidade cid = new Cidade(objDto.getCidadeId(), null, null);
@@ -91,4 +91,10 @@ public class UsuarioService {
 	private void updateData(Usuario newObj, Usuario obj) {
 		newObj.setNome(obj.getNome());
 	}
+
+	public List<Usuario> findBy(String nome, String cpf, String dataNascimento, SexoUsuario sexo) {
+		List<Usuario> user = repository.findBy(nome, cpf, dataNascimento, sexo);
+		return user;
+	}
+
 }

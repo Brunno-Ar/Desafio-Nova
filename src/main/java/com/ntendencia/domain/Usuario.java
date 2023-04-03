@@ -22,7 +22,7 @@ public class Usuario implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
-	private String cpfOuCnpj;
+	private String cpf;
 	private String dataNascimento;
 	private Integer sexo;
 	
@@ -33,11 +33,11 @@ public class Usuario implements Serializable {
 
 	}
 
-	public Usuario(Integer id, String nome, String cpfoucnpj, String dataNascimento, SexoUsuario sexo) {
+	public Usuario(Integer id, String nome, String cpf, String dataNascimento, SexoUsuario sexo) {
 		super();
 		this.id = id;
 		this.nome = nome;
-		cpfOuCnpj = cpfoucnpj;
+		this.cpf = cpf;
 		this.dataNascimento = dataNascimento;
 		this.sexo = (sexo == null) ? null : sexo.getCod();
 	}
@@ -59,11 +59,11 @@ public class Usuario implements Serializable {
 	}
 
 	public String getCPF() {
-		return cpfOuCnpj;
+		return cpf;
 	}
 
 	public void setCPF(String cPF) {
-		cpfOuCnpj = cPF;
+		cpf = cPF;
 	}
 
 	public String getDataNascimento() {
@@ -92,7 +92,7 @@ public class Usuario implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(cpfOuCnpj, id);
+		return Objects.hash(cpf, id);
 	}
 
 	@Override
@@ -104,7 +104,7 @@ public class Usuario implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Usuario other = (Usuario) obj;
-		return Objects.equals(cpfOuCnpj, other.cpfOuCnpj) && Objects.equals(id, other.id);
+		return Objects.equals(cpf, other.cpf) && Objects.equals(id, other.id);
 	}
 
 }

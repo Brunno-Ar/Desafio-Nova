@@ -20,6 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.ntendencia.DTO.UsuarioDTO;
 import com.ntendencia.DTO.UsuarioNewDTO;
 import com.ntendencia.domain.Usuario;
+import com.ntendencia.domain.enums.SexoUsuario;
 import com.ntendencia.services.UsuarioService;
 
 @RestController
@@ -77,5 +78,14 @@ public class UsuarioResource {
 				.path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
+	
+	@RequestMapping(value = "/filters", method = RequestMethod.GET)
+	public ResponseEntity<List<Usuario>> findBy(@RequestParam(value = "nome") String nome,
+			@RequestParam(value = "cpf") String cpf,
+			@RequestParam(value = "dataNascimento") String dataNascimento,
+			@RequestParam(value = "sexo") SexoUsuario sexo) {
+		List<Usuario> list = service.findBy(nome, cpf, dataNascimento, sexo);
+		return ResponseEntity.ok().body(list);
 
+	}
 }
