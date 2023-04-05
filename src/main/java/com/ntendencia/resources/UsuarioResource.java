@@ -37,7 +37,7 @@ public class UsuarioResource {
 
 	}
 
-	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody UsuarioDTO objDto, @PathVariable Integer id) {
 		Usuario obj = service.fromDTO(objDto);
 		obj.setId(id);
@@ -70,20 +70,19 @@ public class UsuarioResource {
 
 	}
 
-	@RequestMapping(method=RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody UsuarioNewDTO objDto) {
 		Usuario obj = service.fromDTO(objDto);
 		obj = service.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(obj.getId()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
-	
+
 	@RequestMapping(value = "/filters", method = RequestMethod.GET)
-	public ResponseEntity<List<Usuario>> findBy(@RequestParam(value = "nome") String nome,
-			@RequestParam(value = "cpf") String cpf,
-			@RequestParam(value = "dataNascimento") String dataNascimento,
-			@RequestParam(value = "sexo") SexoUsuario sexo) {
+	public ResponseEntity<List<Usuario>> findBy(@RequestParam(value = "nome", required = false) String nome,
+			@RequestParam(value = "cpf", required = false) String cpf,
+			@RequestParam(value = "dataNascimento", required = false) String dataNascimento,
+			@RequestParam(value = "sexo", required = false) SexoUsuario sexo) {
 		List<Usuario> list = service.findBy(nome, cpf, dataNascimento, sexo);
 		return ResponseEntity.ok().body(list);
 
