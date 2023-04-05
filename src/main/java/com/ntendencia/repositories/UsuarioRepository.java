@@ -12,7 +12,7 @@ import com.ntendencia.domain.enums.SexoUsuario;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
-	@Query (value = "SELECT * FROM USUARIO WHERE nome = ?", nativeQuery = true)
+	@Query (value = "SELECT * FROM USUARIO WHERE nome = ? or cpf = ? or data_nascimento = ? or sexo = ?", nativeQuery = true)
 	List<Usuario> findBy(String nome, String cpf, String dataNascimento, SexoUsuario sexo);
 
 }
