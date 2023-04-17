@@ -19,7 +19,7 @@ public class DevConfig {
 	private String strategy;
 
 	@Bean
-	public boolean instatiateDatabase() {
+	public boolean instantiateDatabase() {
 
 		dbService.instantiateTestDataBase();
 		return true;

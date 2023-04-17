@@ -5,12 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import com.ntendencia.domain.enums.SexoUsuario;
 
@@ -24,7 +19,8 @@ public class Usuario implements Serializable {
 	private String nome;
 	private String cpf;
 	private String dataNascimento;
-	private Integer sexo;
+	@Enumerated(EnumType.STRING)
+	private SexoUsuario sexo;
 	
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
 	private List<Endereco> enderecos = new ArrayList<>();
@@ -39,7 +35,7 @@ public class Usuario implements Serializable {
 		this.nome = nome;
 		this.cpf = cpf;
 		this.dataNascimento = dataNascimento;
-		this.sexo = (sexo == null) ? null : sexo.getCod();
+		this.sexo = sexo;
 	}
 
 	public Integer getId() {
@@ -83,11 +79,11 @@ public class Usuario implements Serializable {
 	}
 
 	public SexoUsuario getSexo() {
-		return SexoUsuario.toEnum(sexo);
+		return this.sexo;
 	}
 
 	public void setSexo(SexoUsuario sexo) {
-		this.sexo = sexo.getCod();
+		this.sexo = sexo;
 	}
 
 	@Override

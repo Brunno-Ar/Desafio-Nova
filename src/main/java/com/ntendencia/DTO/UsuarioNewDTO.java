@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.validation.constraints.NotEmpty;
 
+import com.ntendencia.domain.enums.SexoUsuario;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -19,7 +20,7 @@ public class UsuarioNewDTO implements Serializable {
 	private String cpf;
 	
 	private String dataNascimento;
-	private Integer sexo;
+	private SexoUsuario sexo;
 
 	private String bairro;
 	@NotEmpty(message = "Preenchimento Obrigatorio")
@@ -61,11 +62,11 @@ public class UsuarioNewDTO implements Serializable {
 		this.dataNascimento = dataNascimento;
 	}
 
-	public Integer getSexo() {
+	public SexoUsuario getSexo() {
 		return sexo;
 	}
 
-	public void setSexo(Integer sexo) {
+	public void setSexo(SexoUsuario sexo) {
 		this.sexo = sexo;
 	}
 
