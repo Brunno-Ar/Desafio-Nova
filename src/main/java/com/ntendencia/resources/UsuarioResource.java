@@ -28,12 +28,13 @@ public class UsuarioResource {
     @Autowired
     private UsuarioService service;
 
+
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Retorna a lista de pessoa"), @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"), @ApiResponse(code = 500, message = "Foi gerada uma exceção"),})
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiOperation(value = "Retornar um usuario pelo Id")
     public ResponseEntity<Usuario> buscarUsuarioPorId(@PathVariable Integer id) {
-        Usuario user = service.buscarUsuarioPorId(id);
-        return ResponseEntity.ok().body(user);
+        Usuario usuario = service.buscarUsuarioPorId(id);
+        return ResponseEntity.ok().body(usuario);
 
     }
 
@@ -59,6 +60,7 @@ public class UsuarioResource {
     @RequestMapping(method = RequestMethod.GET)
     @ApiOperation(value = "Retornar todos os usuario")
     public ResponseEntity<List<UsuarioDTO>> buscarTodosOsUsuarios() {
+
         List<Usuario> list = service.buscarTodosOsUsuarios();
         List<UsuarioDTO> listDTO = list.stream().map(UsuarioDTO::new).collect(Collectors.toList());
         return ResponseEntity.ok().body(listDTO);

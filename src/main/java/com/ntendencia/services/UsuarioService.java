@@ -10,6 +10,7 @@ import com.ntendencia.repositories.EnderecoRepository;
 import com.ntendencia.repositories.UsuarioRepository;
 import com.ntendencia.services.exceptions.DataIntegrityException;
 import com.ntendencia.services.exceptions.ObjectNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -30,11 +31,14 @@ public class UsuarioService {
     @Autowired
     private EnderecoRepository enderecoRepository;
 
+    private ModelMapper modelMapper = new ModelMapper();
+
     public Usuario buscarUsuarioPorId(Integer id) {
         Optional<Usuario> usuario = usuarioRepository.findById(id);
         if (usuario == null) {
             throw new ObjectNotFoundException(
-                    "Objeto não encontrado! Id: " + id + ", Tipo: " + Usuario.class.getName());
+               Utils.getMensagemValidacao("usuario.nao.encontrado", id, Usuario.class.getName())
+            );
         }
         return usuario.orElse(null);
     }
@@ -58,7 +62,7 @@ public class UsuarioService {
         try {
             usuarioRepository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityException("Não é possivel excluir usuarios que contém Endereço");
+            throw new DataIntegrityException(Utils.getMensagemValidacao("excluir.usuario.com.endereco"));
         }
     }
 
@@ -73,19 +77,22 @@ public class UsuarioService {
     }
 
     public Usuario inserirObjetoPeloDTO(UsuarioDTO objDto) {
-        return new Usuario(objDto.getId(), objDto.getNome(), null, null, null);
+        Usuario usuario = modelMapper.map(objDto, Usuario.class);
+
+        return usuario;
     }
 
     public Usuario inserirObjetoPeloDTO(UsuarioNewDTO objDto) {
-        Usuario user = new Usuario(null, objDto.getNome(), objDto.getcpf(), objDto.getDataNascimento(),
-                objDto.getSexo());
+        Usuario usuario = modelMapper.map(objDto, Usuario.class);
 
         Cidade cid = new Cidade(objDto.getCidadeId(), null, null);
 
         Endereco end = new Endereco(null, objDto.getLogradouro(), objDto.getNumero(), objDto.getComplemento(),
-                objDto.getBairro(), objDto.getCep(), user, cid);
-        user.getEnderecos().add(end);
-        return user;
+                objDto.getBairro(), objDto.getCep(), usuario, cid);
+
+        usuario.getEnderecos().add(end);
+
+        return usuario;
     }
 
     private void atualizaObjeto(Usuario newObj, Usuario obj) {
@@ -96,9 +103,10 @@ public class UsuarioService {
         List<Usuario> usuario = usuarioRepository.findBy(nome, cpf, dataNascimento, sexo);
         if (usuario == null) {
             throw new ObjectNotFoundException(
-                    "Objeto não encontrado! Id: " + nome + ", Tipo: " + Usuario.class.getName());
+                    Utils.getMensagemValidacao("usuario.nao.encontrado", nome, Usuario.class.getName()));
         }
         return usuario;
     }
+
 
 }
