@@ -13,7 +13,7 @@ import com.ntendencia.domain.enums.SexoUsuario;
 public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
+    @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
@@ -103,4 +103,15 @@ public class Usuario implements Serializable {
 		return Objects.equals(cpf, other.cpf) && Objects.equals(id, other.id);
 	}
 
+	@Override
+	public String toString() {
+		return "Usuario{" +
+				"id=" + id +
+				", nome='" + nome + '\'' +
+				", cpf='" + cpf + '\'' +
+				", dataNascimento='" + dataNascimento + '\'' +
+				", sexo=" + sexo +
+				", enderecos=" + enderecos +
+				'}';
+	}
 }

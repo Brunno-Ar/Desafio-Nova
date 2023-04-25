@@ -1,0 +1,13 @@
+{
+  "nome": "Bruna",
+  "cpf": "933.457.480-10",
+  "dataNascimento": "27/09/2003",
+  "sexo": "FEMININO",
+
+  "bairro" : "Santa Cruz",
+  "numero": "4817",
+  "cep": "22783127",
+  "logradouro": "Estrada Manguariba, Santa Cruz, Rio de Janeiro",
+  "complemento": "Casa 8",
+  "cidadeId": 2
+}

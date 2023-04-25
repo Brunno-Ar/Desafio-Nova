@@ -8,8 +8,8 @@ import com.ntendencia.domain.Usuario;
 import com.ntendencia.domain.enums.SexoUsuario;
 import com.ntendencia.repositories.EnderecoRepository;
 import com.ntendencia.repositories.UsuarioRepository;
-import com.ntendencia.services.exceptions.DataIntegrityException;
-import com.ntendencia.services.exceptions.ObjectNotFoundException;
+import com.ntendencia.services.exceptions.IntegridadeDeDadosException;
+import com.ntendencia.services.exceptions.ObjetoNaoEncontradoException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -31,12 +31,13 @@ public class UsuarioService {
     @Autowired
     private EnderecoRepository enderecoRepository;
 
-    private ModelMapper modelMapper = new ModelMapper();
+    private final ModelMapper modelMapper = new ModelMapper();
 
     public Usuario buscarUsuarioPorId(Integer id) {
-        Optional<Usuario> usuario = usuarioRepository.findById(id);
+        Optional<Usuario> usuario;
+        usuario = usuarioRepository.findById(id);
         if (usuario == null) {
-            throw new ObjectNotFoundException(
+            throw new ObjetoNaoEncontradoException(
                Utils.getMensagemValidacao("usuario.nao.encontrado", id, Usuario.class.getName())
             );
         }
@@ -62,11 +63,12 @@ public class UsuarioService {
         try {
             usuarioRepository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityException(Utils.getMensagemValidacao("excluir.usuario.com.endereco"));
+            throw new IntegridadeDeDadosException(Utils.getMensagemValidacao("excluir.usuario.com.endereco"));
         }
     }
 
     public List<Usuario> buscarTodosOsUsuarios() {
+
         return usuarioRepository.findAll();
     }
 
@@ -77,9 +79,8 @@ public class UsuarioService {
     }
 
     public Usuario inserirObjetoPeloDTO(UsuarioDTO objDto) {
-        Usuario usuario = modelMapper.map(objDto, Usuario.class);
 
-        return usuario;
+        return modelMapper.map(objDto, Usuario.class);
     }
 
     public Usuario inserirObjetoPeloDTO(UsuarioNewDTO objDto) {
@@ -102,7 +103,7 @@ public class UsuarioService {
     public List<Usuario> buscarUsuariosFiltrados(String nome, String cpf, String dataNascimento, SexoUsuario sexo) {
         List<Usuario> usuario = usuarioRepository.findBy(nome, cpf, dataNascimento, sexo);
         if (usuario == null) {
-            throw new ObjectNotFoundException(
+            throw new ObjetoNaoEncontradoException(
                     Utils.getMensagemValidacao("usuario.nao.encontrado", nome, Usuario.class.getName()));
         }
         return usuario;
