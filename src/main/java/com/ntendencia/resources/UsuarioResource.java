@@ -4,7 +4,7 @@ import com.ntendencia.DTO.UsuarioDTO;
 import com.ntendencia.DTO.UsuarioNewDTO;
 import com.ntendencia.domain.Usuario;
 import com.ntendencia.domain.enums.SexoUsuario;
-import com.ntendencia.services.UsuarioService;
+import com.ntendencia.services.UsuarioServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -26,10 +26,12 @@ import java.util.stream.Collectors;
 public class UsuarioResource {
 
     @Autowired
-    private UsuarioService service;
+    private UsuarioServiceImpl service;
 
 
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "Retorna a lista de pessoa"), @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"), @ApiResponse(code = 500, message = "Foi gerada uma exceção"),})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Retorna a lista de pessoa"),
+            @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
+            @ApiResponse(code = 500, message = "Foi gerada uma exceção"),})
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiOperation(value = "Retornar um usuario pelo Id",
             notes = "Retornar um usuario pelo Id.",
@@ -62,7 +64,9 @@ public class UsuarioResource {
         return ResponseEntity.noContent().build();
     }
 
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "Retorna a lista de pessoa"), @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"), @ApiResponse(code = 500, message = "Foi gerada uma exceção"),})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Retorna a lista de pessoa"),
+            @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
+            @ApiResponse(code = 500, message = "Foi gerada uma exceção"),})
     @RequestMapping(method = RequestMethod.GET)
     @ApiOperation(value = "Retornar todos os usuario",
             notes = "Retornar todos os usuario.",
@@ -74,12 +78,17 @@ public class UsuarioResource {
 
     }
 
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "Retorna a lista de pessoa"), @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"), @ApiResponse(code = 500, message = "Foi gerada uma exceção"),})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Retorna a lista de pessoa"),
+            @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
+            @ApiResponse(code = 500, message = "Foi gerada uma exceção"),})
     @RequestMapping(value = "/page", method = RequestMethod.GET)
     @ApiOperation(value = "Retornar usuarios de forma paginada",
             notes = "Retornar usuarios de forma paginada. Quantos objetos retornar por pagina, Odernar por nome, CPF, data de nascimento ou a direção ASC e DESC .",
             tags = {"buscar"})
-    public ResponseEntity<Page<UsuarioDTO>> buscaPaginadaDeUsuario(@RequestParam(value = "page", defaultValue = "0") Integer page, @RequestParam(value = "linesPerPager", defaultValue = "24") Integer linesPerPage, @RequestParam(value = "orderBy", defaultValue = "nome") String orderBy, @RequestParam(value = "direction", defaultValue = "ASC") String direction) {
+    public ResponseEntity<Page<UsuarioDTO>> buscaPaginadaDeUsuario(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                                                                   @RequestParam(value = "linesPerPager", defaultValue = "24") Integer linesPerPage,
+                                                                   @RequestParam(value = "orderBy", defaultValue = "nome") String orderBy,
+                                                                   @RequestParam(value = "direction", defaultValue = "ASC") String direction) {
         Page<Usuario> list = service.buscaPaginadaDeUsuario(page, linesPerPage, orderBy, direction);
         Page<UsuarioDTO> listDTO = list.map(UsuarioDTO::new);
         return ResponseEntity.ok().body(listDTO);
@@ -98,7 +107,9 @@ public class UsuarioResource {
         return ResponseEntity.created(uri).body("Usuario criado com sucesso");
     }
 
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "Retorna a lista de pessoa"), @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"), @ApiResponse(code = 500, message = "Foi gerada uma exceção"),})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Retorna a lista de pessoa"),
+            @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
+            @ApiResponse(code = 500, message = "Foi gerada uma exceção"),})
     @RequestMapping(value = "/filters", method = RequestMethod.GET)
     @ApiOperation(value = "Retornar usuario usando filtros",
             notes = "Retornar usuario usando filtros.",
