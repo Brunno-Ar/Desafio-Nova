@@ -1,5 +1,8 @@
 package service;
 
+import com.ntendencia.domain.Cidade;
+import com.ntendencia.domain.Endereco;
+import com.ntendencia.domain.Estado;
 import com.ntendencia.domain.Usuario;
 import com.ntendencia.domain.enums.SexoUsuario;
 import com.ntendencia.repositories.EnderecoRepository;
@@ -78,6 +81,16 @@ public class UsuarioServiceTeste {
     public void RemoverUsuariosTest() {
         usuarioServiceImpl.excluirUsuario(1);
         Mockito.verify(usuarioRepository, Mockito.times(1)).deleteById(1);
+    }
+
+    @Test
+    public void InserirUsuariosTest(){
+        Usuario usuarioMockado = new Usuario(1, "Bruno", "123.123.123.22", "03/02/2003",
+                SexoUsuario.MASCULINO);
+        when(usuarioRepository.findById(usuarioMockado.getId())).thenReturn(Optional.of(usuarioMockado));
+        when(usuarioRepository.save(usuarioMockado)).thenReturn((usuarioMockado));
+        usuarioServiceImpl.inserirNovoUsuario(usuarioMockado);
+        Mockito.verify(usuarioRepository, Mockito.times(1)).save(usuarioMockado);
     }
 
 }

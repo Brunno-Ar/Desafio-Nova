@@ -97,12 +97,15 @@ public class UsuarioServiceImpl implements UsuarioService{
     public Usuario inserirObjetoPeloDTO(UsuarioNewDTO objDto) {
         Usuario usuario = modelMapper.map(objDto, Usuario.class);
 
-        Cidade cid = new Cidade(objDto.getCidadeId(), null, null);
+        objDto.getEnderecos().stream()
+                .peek(enderecoDTO -> {
+                    Cidade cid = new Cidade(enderecoDTO.getCidade().getId(), null, null);
 
-        Endereco end = new Endereco(null, objDto.getLogradouro(), objDto.getNumero(), objDto.getComplemento(),
-                objDto.getBairro(), objDto.getCep(), usuario, cid);
+                    Endereco end = new Endereco(null, enderecoDTO.getLogradouro(), enderecoDTO.getNumero(), enderecoDTO.getComplemento(),
+                            enderecoDTO.getBairro(), enderecoDTO.getCep(), usuario, cid);
 
-        usuario.getEnderecos().add(end);
+                    usuario.getEnderecos().add(end);
+                });
 
         return usuario;
     }
