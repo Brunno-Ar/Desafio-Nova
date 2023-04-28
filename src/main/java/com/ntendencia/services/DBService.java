@@ -47,13 +47,14 @@ public class DBService {
 		estadoRepo.saveAll(Arrays.asList(est1, est2));
 		cidadeRepo.saveAll(Arrays.asList(c1, c2, c3));
 
-		Endereco endereco1 = new Endereco(null, "Ao lado da estacao", "4817", "casa 10", "Rj", "22783127", user1, c1);
-		Endereco endereco2 = new Endereco(null, "proximo a padaria", "4819", "casa 11", "Rj", "22780160", user2, c1);
+		Endereco endereco1 = new Endereco(null, "Ao lado da estacao", "4817", "casa 10",
+				"Rj", "22783127", user1, c1);
+		Endereco endereco2 = new Endereco(null, "proximo a padaria", "4819", "casa 11",
+				"Rj", "22780160", user2, c1);
 
 		user1.getEnderecos().addAll(Arrays.asList(endereco1));
 		user2.getEnderecos().addAll(Arrays.asList(endereco2));
 
 		enderecoRepo.saveAll(Arrays.asList(endereco1, endereco2));
 	}
-
 }

@@ -1,7 +1,6 @@
 package com.ntendencia.repositories;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,7 +17,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 			"or cpf = :cpf " +
 			"or data_nascimento = :dataNascimento " +
 			"or sexo = :sexo", nativeQuery = true)
-	List<Usuario> findBy(@Param("nome") String nome, @Param("cpf") String cpf, @Param("dataNascimento") String dataNascimento, @Param("sexo") SexoUsuario sexo);
-
-    Optional<Usuario> findByCpf(String cpf);
+	List<Usuario> findBy(@Param("nome") String nome, @Param("cpf") String cpf, @Param("dataNascimento")
+	String dataNascimento, @Param("sexo") SexoUsuario sexo);
 }

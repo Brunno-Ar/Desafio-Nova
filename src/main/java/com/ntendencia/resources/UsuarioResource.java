@@ -83,12 +83,14 @@ public class UsuarioResource {
             @ApiResponse(code = 500, message = "Foi gerada uma exceção"),})
     @RequestMapping(value = "/page", method = RequestMethod.GET)
     @ApiOperation(value = "Retornar usuarios de forma paginada",
-            notes = "Retornar usuarios de forma paginada. Quantos objetos retornar por pagina, Odernar por nome, CPF, data de nascimento ou a direção ASC e DESC .",
+            notes = "Retornar usuarios de forma paginada. Quantos objetos retornar por pagina, Odernar por nome, CPF, " +
+                    "data de nascimento ou a direção ASC e DESC .",
             tags = {"buscar"})
-    public ResponseEntity<Page<UsuarioDTO>> buscaPaginadaDeUsuario(@RequestParam(value = "page", defaultValue = "0") Integer page,
-                                                                   @RequestParam(value = "linesPerPager", defaultValue = "24") Integer linesPerPage,
-                                                                   @RequestParam(value = "orderBy", defaultValue = "nome") String orderBy,
-                                                                   @RequestParam(value = "direction", defaultValue = "ASC") String direction) {
+    public ResponseEntity<Page<UsuarioDTO>> buscaPaginadaDeUsuario(
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "linesPerPager", defaultValue = "24") Integer linesPerPage,
+            @RequestParam(value = "orderBy", defaultValue = "nome") String orderBy,
+            @RequestParam(value = "direction", defaultValue = "ASC") String direction) {
         Page<Usuario> list = service.buscaPaginadaDeUsuario(page, linesPerPage, orderBy, direction);
         Page<UsuarioDTO> listDTO = list.map(UsuarioDTO::new);
         return ResponseEntity.ok().body(listDTO);
@@ -114,7 +116,11 @@ public class UsuarioResource {
     @ApiOperation(value = "Retornar usuario usando filtros",
             notes = "Retornar usuario usando filtros.",
             tags = {"buscar"})
-    public ResponseEntity<List<Usuario>> buscarUsuariosFiltrados(@RequestParam(value = "nome", required = false) String nome, @RequestParam(value = "cpf", required = false) String cpf, @RequestParam(value = "dataNascimento", required = false) String dataNascimento, @RequestParam(value = "sexo", required = false) SexoUsuario sexo) {
+    public ResponseEntity<List<Usuario>> buscarUsuariosFiltrados(
+            @RequestParam(value = "nome", required = false) String nome,
+            @RequestParam(value = "cpf", required = false) String cpf,
+            @RequestParam(value = "dataNascimento", required = false) String dataNascimento,
+            @RequestParam(value = "sexo", required = false) SexoUsuario sexo) {
         List<Usuario> list = service.buscarUsuariosFiltrados(nome, cpf, dataNascimento, sexo);
         return ResponseEntity.ok().body(list);
 

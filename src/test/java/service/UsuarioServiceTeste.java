@@ -44,7 +44,8 @@ public class UsuarioServiceTeste {
 
     @Test
     public void buscaUsuarioPorIdTest() {
-        Usuario usuarioMockado = new Usuario(1, "Bruno", "123.123.123.23", "03/02/2003", SexoUsuario.MASCULINO);
+        Usuario usuarioMockado = new Usuario(1, "Bruno", "123.123.123.23", "03/02/2003",
+                SexoUsuario.MASCULINO);
         when(usuarioRepository.findById(usuarioMockado.getId())).thenReturn(Optional.of(usuarioMockado));
         Usuario usuario = usuarioServiceImpl.buscarUsuarioPorId(1);
 
@@ -53,7 +54,8 @@ public class UsuarioServiceTeste {
 
     @Test
     public void BuscaTodosUsuariosTest() {
-        Usuario usuarioMockado = new Usuario(1, "Bruno", "123.123.123.23", "03/02/2003", SexoUsuario.MASCULINO);
+        Usuario usuarioMockado = new Usuario(1, "Bruno", "123.123.123.23", "03/02/2003",
+                SexoUsuario.MASCULINO);
         List<Usuario> usuarios = usuarioServiceImpl.buscarTodosOsUsuarios();
         usuarios.add(usuarioMockado);
         when(usuarioRepository.findAll()).thenReturn(usuarios);
@@ -63,8 +65,10 @@ public class UsuarioServiceTeste {
 
     @Test
     public void AtualizarDadosUsuarioTest() {
-        Usuario usuarioMockado = new Usuario(1, "Bruno", "123.123.123.23", "03/02/2003", SexoUsuario.MASCULINO);
-        Usuario novoUsuarioMockaco = new Usuario(1, "Breno", "123.123.123.23", "16/03/2003", SexoUsuario.MASCULINO);
+        Usuario usuarioMockado = new Usuario(1, "Bruno", "123.123.123.23", "03/02/2003",
+                SexoUsuario.MASCULINO);
+        Usuario novoUsuarioMockaco = new Usuario(1, "Breno", "123.123.123.23", "16/03/2003",
+                SexoUsuario.MASCULINO);
         when(usuarioRepository.findById(usuarioMockado.getId())).thenReturn(Optional.of(usuarioMockado));
         usuarioServiceImpl.atualizarUsuario(novoUsuarioMockaco);
         Mockito.verify(usuarioRepository, Mockito.times(1)).save(novoUsuarioMockaco);
