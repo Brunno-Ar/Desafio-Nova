@@ -33,6 +33,14 @@ public class UsuarioServiceImpl implements UsuarioService{
 
     private final ModelMapper modelMapper = new ModelMapper();
 
+    private Usuario buscarPorCPF(Usuario objDTO){
+        Usuario obj = usuarioRepository.findByCpf(objDTO.getCPF());
+        if(obj != null){
+            return obj;
+        }
+        return null;
+    }
+
     public Usuario buscarUsuarioPorId(Integer id) {
         Optional<Usuario> usuario;
         usuario = usuarioRepository.findById(id);
@@ -46,6 +54,9 @@ public class UsuarioServiceImpl implements UsuarioService{
 
     @Transactional
     public Usuario inserirNovoUsuario(Usuario obj) {
+        if(buscarPorCPF(obj) != null){
+            throw new IntegridadeDeDadosException("CPF já cadastrado na base de dados");
+        }
         obj.setId(null);
         obj = usuarioRepository.save(obj);
         enderecoRepository.saveAll(obj.getEnderecos());

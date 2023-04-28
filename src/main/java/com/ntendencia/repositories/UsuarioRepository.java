@@ -19,4 +19,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 			"or sexo = :sexo", nativeQuery = true)
 	List<Usuario> findBy(@Param("nome") String nome, @Param("cpf") String cpf, @Param("dataNascimento")
 	String dataNascimento, @Param("sexo") SexoUsuario sexo);
+
+	@Query (value = "SELECT * FROM USUARIO WHERE cpf = :cpf", nativeQuery = true)
+	Usuario findByCpf(@Param("cpf") String cpf);
 }
