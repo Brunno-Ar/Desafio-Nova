@@ -23,8 +23,17 @@ public class UsuarioNewDTO implements Serializable {
 	
 	private String dataNascimento;
 	private SexoUsuario sexo;
-	@Valid
-	private List<EnderecoDTO> enderecos;
+	private String bairro;
+	@NotEmpty(message = "Preenchimento Obrigatorio")
+	private String numero;
+
+	@NotEmpty(message = "Preenchimento Obrigatorio")
+	private String cep;
+	@NotEmpty(message = "Preenchimento Obrigatorio")
+	private String logradouro;
+	private String complemento;
+
+	private Integer cidadeId;
 
 	public UsuarioNewDTO() {
 
@@ -62,11 +71,51 @@ public class UsuarioNewDTO implements Serializable {
 		this.sexo = sexo;
 	}
 
-	public List<EnderecoDTO> getEnderecos() {
-		return enderecos;
+	public String getBairro() {
+		return bairro;
 	}
 
-	public void setEnderecos(List<EnderecoDTO> enderecos) {
-		this.enderecos = enderecos;
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
+	public String getNumero() {
+		return numero;
+	}
+
+	public void setNumero(String numero) {
+		this.numero = numero;
+	}
+
+	public String getCep() {
+		return cep;
+	}
+
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
+
+	public String getLogradouro() {
+		return logradouro;
+	}
+
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
+	}
+
+	public String getComplemento() {
+		return complemento;
+	}
+
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
+	}
+
+	public Integer getCidadeId() {
+		return cidadeId;
+	}
+
+	public void setCidadeId(Integer cidadeId) {
+		this.cidadeId = cidadeId;
 	}
 }

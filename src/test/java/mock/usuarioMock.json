@@ -1,13 +1,23 @@
 {
-  "nome": "Bruna",
-  "cpf": "933.457.480-10",
-  "dataNascimento": "27/09/2003",
-  "sexo": "FEMININO",
-
-  "bairro" : "Santa Cruz",
-  "numero": "4817",
-  "cep": "22783127",
-  "logradouro": "Estrada Manguariba, Santa Cruz, Rio de Janeiro",
-  "complemento": "Casa 8",
-  "cidadeId": 2
+  "cpf": "938.761.720-39",
+  "dataNascimento": "07/12/2000",
+  "enderecos": [
+    {
+      "bairro": "Santa Cruz",
+      "cep": "22783127",
+      "cidade": {
+        "estado": {
+          "id": 2,
+          "nome": "Rio de Janeiro"
+        },
+        "id": 1,
+        "nome": "Rio de Janeiro"
+      },
+      "complemento": "Casa 8",
+      "logradouro": "Estrada Manguariba, Santa Cruz, Rio de Janeiro",
+      "numero": "4817"
+    }
+  ],
+  "nome": "Brenda",
+  "sexo": "FEMININO"
 }

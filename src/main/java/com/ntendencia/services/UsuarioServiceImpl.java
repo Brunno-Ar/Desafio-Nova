@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UsuarioServiceImpl implements UsuarioService{
+public class UsuarioServiceImpl implements UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -33,9 +33,9 @@ public class UsuarioServiceImpl implements UsuarioService{
 
     private final ModelMapper modelMapper = new ModelMapper();
 
-    private Usuario buscarPorCPF(Usuario objDTO){
+    private Usuario buscarPorCPF(Usuario objDTO) {
         Usuario obj = usuarioRepository.findByCpf(objDTO.getCPF());
-        if(obj != null){
+        if (obj != null) {
             return obj;
         }
         return null;
@@ -46,7 +46,7 @@ public class UsuarioServiceImpl implements UsuarioService{
         usuario = usuarioRepository.findById(id);
         if (usuario == null) {
             throw new ObjetoNaoEncontradoException(
-               Utils.getMensagemValidacao("usuario.nao.encontrado", id, Usuario.class.getName())
+                    Utils.getMensagemValidacao("usuario.nao.encontrado", id, Usuario.class.getName())
             );
         }
         return usuario.orElse(null);
@@ -54,7 +54,7 @@ public class UsuarioServiceImpl implements UsuarioService{
 
     @Transactional
     public Usuario inserirNovoUsuario(Usuario obj) {
-        if(buscarPorCPF(obj) != null){
+        if (buscarPorCPF(obj) != null) {
             throw new IntegridadeDeDadosException("CPF já cadastrado na base de dados");
         }
         obj.setId(null);
@@ -97,15 +97,12 @@ public class UsuarioServiceImpl implements UsuarioService{
     public Usuario inserirObjetoPeloDTO(UsuarioNewDTO objDto) {
         Usuario usuario = modelMapper.map(objDto, Usuario.class);
 
-        objDto.getEnderecos().stream()
-                .peek(enderecoDTO -> {
-                    Cidade cid = new Cidade(enderecoDTO.getCidade().getId(), null, null);
+        Cidade cid = new Cidade(objDto.getCidadeId(), null, null);
 
-                    Endereco end = new Endereco(null, enderecoDTO.getLogradouro(), enderecoDTO.getNumero(), enderecoDTO.getComplemento(),
-                            enderecoDTO.getBairro(), enderecoDTO.getCep(), usuario, cid);
+        Endereco end = new Endereco(null, objDto.getLogradouro(), objDto.getNumero(), objDto.getComplemento(),
+                objDto.getBairro(), objDto.getCep(), usuario, cid);
 
-                    usuario.getEnderecos().add(end);
-                });
+        usuario.getEnderecos().add(end);
 
         return usuario;
     }

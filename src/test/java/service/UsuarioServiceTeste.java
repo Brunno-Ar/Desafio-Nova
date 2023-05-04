@@ -5,7 +5,9 @@ import com.ntendencia.domain.Endereco;
 import com.ntendencia.domain.Estado;
 import com.ntendencia.domain.Usuario;
 import com.ntendencia.domain.enums.SexoUsuario;
+import com.ntendencia.repositories.CidadeRepository;
 import com.ntendencia.repositories.EnderecoRepository;
+import com.ntendencia.repositories.EstadoRepository;
 import com.ntendencia.repositories.UsuarioRepository;
 import com.ntendencia.services.UsuarioServiceImpl;
 import org.junit.Assert;
@@ -16,6 +18,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -39,6 +42,11 @@ public class UsuarioServiceTeste {
 
     @MockBean
     private EnderecoRepository enderecoRepository;
+
+    @MockBean
+    private CidadeRepository cidadeRepository;
+    @MockBean
+    private EstadoRepository estadoRepository;
 
     @Before
     public void setup() {
@@ -87,8 +95,17 @@ public class UsuarioServiceTeste {
     public void InserirUsuariosTest(){
         Usuario usuarioMockado = new Usuario(1, "Bruno", "123.123.123.22", "03/02/2003",
                 SexoUsuario.MASCULINO);
+        Estado estado = new Estado(null, "Rio de Janeiro");
+        Cidade cidade = new Cidade(null, "Rio de Janeiro", estado);
         when(usuarioRepository.findById(usuarioMockado.getId())).thenReturn(Optional.of(usuarioMockado));
         when(usuarioRepository.save(usuarioMockado)).thenReturn((usuarioMockado));
+        when(estadoRepository.save(estado)).thenReturn((estado));
+        when(cidadeRepository.save(cidade)).thenReturn((cidade));
+
+        Endereco endereco1 = new Endereco(null, "Ao lado da estacao", "4817", "casa 10",
+                "Rj", "22783127", usuarioMockado, cidade);
+        when(enderecoRepository.save(endereco1)).thenReturn((endereco1));
+
         usuarioServiceImpl.inserirNovoUsuario(usuarioMockado);
         Mockito.verify(usuarioRepository, Mockito.times(1)).save(usuarioMockado);
     }
