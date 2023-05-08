@@ -4,7 +4,7 @@ import com.ntendencia.DTO.UsuarioDTO;
 import com.ntendencia.DTO.UsuarioNewDTO;
 import com.ntendencia.domain.Usuario;
 import com.ntendencia.domain.enums.SexoUsuario;
-import com.ntendencia.services.UsuarioServiceImpl;
+import com.ntendencia.services.impl.UsuarioServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

@@ -16,23 +16,21 @@ public class UsuarioNewDTO implements Serializable {
 	@NotEmpty(message = "Preenchimento Obrigatorio")
 	@Length(min = 4, max = 120, message = "O nome deve ter no minimo 4 caracteres")
 	private String nome;
-	
+
 	@NotEmpty(message = "Preenchimento Obrigatorio")
 	@CPF
 	private String cpf;
-	
+
+	@NotEmpty(message = "Preenchimento Obrigatorio")
 	private String dataNascimento;
 	private SexoUsuario sexo;
-	private String bairro;
 	@NotEmpty(message = "Preenchimento Obrigatorio")
+	private String bairro;
 	private String numero;
-
 	@NotEmpty(message = "Preenchimento Obrigatorio")
 	private String cep;
-	@NotEmpty(message = "Preenchimento Obrigatorio")
 	private String logradouro;
 	private String complemento;
-
 	private Integer cidadeId;
 
 	public UsuarioNewDTO() {

@@ -1,4 +1,4 @@
-package com.ntendencia.services;
+package com.ntendencia.services.impl;
 
 import com.ntendencia.DTO.UsuarioDTO;
 import com.ntendencia.DTO.UsuarioNewDTO;
@@ -8,6 +8,8 @@ import com.ntendencia.domain.Usuario;
 import com.ntendencia.domain.enums.SexoUsuario;
 import com.ntendencia.repositories.EnderecoRepository;
 import com.ntendencia.repositories.UsuarioRepository;
+import com.ntendencia.services.UsuarioService;
+import com.ntendencia.services.Utils;
 import com.ntendencia.services.exceptions.IntegridadeDeDadosException;
 import com.ntendencia.services.exceptions.ObjetoNaoEncontradoException;
 import org.modelmapper.ModelMapper;
