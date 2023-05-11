@@ -13,21 +13,21 @@ import org.hibernate.validator.constraints.br.CPF;
 public class UsuarioNewDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@NotEmpty(message = "Preenchimento Obrigatorio")
-	@Length(min = 4, max = 120, message = "O nome deve ter no minimo 4 caracteres")
+	@NotEmpty(message = "{nome.obrigatorio}")
+	@Length(min = 4, max = 120, message = "{tamanho.min.max.nome}")
 	private String nome;
 
-	@NotEmpty(message = "Preenchimento Obrigatorio")
+	@NotEmpty(message = "{cpf.obrigatorio}")
 	@CPF
 	private String cpf;
 
-	@NotEmpty(message = "Preenchimento Obrigatorio")
+	@NotEmpty(message = "{dataNascimento.obrigatorio}")
 	private String dataNascimento;
 	private SexoUsuario sexo;
-	@NotEmpty(message = "Preenchimento Obrigatorio")
+	@NotEmpty(message = "{bairro.obrigatorio}")
 	private String bairro;
 	private String numero;
-	@NotEmpty(message = "Preenchimento Obrigatorio")
+	@NotEmpty(message = "{cep.obrigatorio}")
 	private String cep;
 	private String logradouro;
 	private String complemento;

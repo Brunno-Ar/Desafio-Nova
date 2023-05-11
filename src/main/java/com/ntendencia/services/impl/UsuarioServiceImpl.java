@@ -57,7 +57,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Transactional
     public Usuario inserirNovoUsuario(Usuario obj) {
         if (buscarPorCPF(obj) != null) {
-            throw new IntegridadeDeDadosException("CPF já cadastrado na base de dados");
+            throw new IntegridadeDeDadosException(
+                    Utils.getMensagemValidacao("cpf.cadastrado"));
         }
         obj.setId(null);
         obj = usuarioRepository.save(obj);
@@ -76,7 +77,8 @@ public class UsuarioServiceImpl implements UsuarioService {
         try {
             usuarioRepository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
-            throw new IntegridadeDeDadosException(Utils.getMensagemValidacao("excluir.usuario.com.endereco"));
+            throw new IntegridadeDeDadosException(
+                    Utils.getMensagemValidacao("excluir.usuario.com.endereco"));
         }
     }
 
