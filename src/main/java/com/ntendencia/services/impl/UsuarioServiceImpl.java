@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -36,27 +37,21 @@ public class UsuarioServiceImpl implements UsuarioService {
     private final ModelMapper modelMapper = new ModelMapper();
 
     private Usuario buscarPorCPF(Usuario objDTO) {
-        Usuario obj = usuarioRepository.findByCpf(objDTO.getCPF());
-        if (obj != null) {
-            return obj;
-        }
-        return null;
+        return usuarioRepository.findByCpf(objDTO.getCPF());
     }
 
     public Usuario buscarUsuarioPorId(Integer id) {
         Optional<Usuario> usuario;
         usuario = usuarioRepository.findById(id);
-        if (usuario == null) {
-            throw new ObjetoNaoEncontradoException(
-                    Utils.getMensagemValidacao("usuario.nao.encontrado", id, Usuario.class.getName())
-            );
-        }
+        if (Objects.isNull(usuario)) throw new ObjetoNaoEncontradoException(
+                Utils.getMensagemValidacao("usuario.nao.encontrado", id, Usuario.class.getName())
+        );
         return usuario.orElse(null);
     }
 
     @Transactional
     public Usuario inserirNovoUsuario(Usuario obj) {
-        if (buscarPorCPF(obj) != null) {
+        if (Objects.nonNull(buscarPorCPF(obj))) {
             throw new IntegridadeDeDadosException(
                     Utils.getMensagemValidacao("cpf.cadastrado"));
         }

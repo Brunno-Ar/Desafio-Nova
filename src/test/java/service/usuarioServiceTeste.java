@@ -6,8 +6,8 @@ import com.ntendencia.repositories.CidadeRepository;
 import com.ntendencia.repositories.EnderecoRepository;
 import com.ntendencia.repositories.EstadoRepository;
 import com.ntendencia.repositories.UsuarioRepository;
-import com.ntendencia.services.impl.UsuarioServiceImpl;
 import com.ntendencia.services.Utils;
+import com.ntendencia.services.impl.UsuarioServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -95,7 +95,7 @@ public class usuarioServiceTeste {
     }
 
     @Test
-    public void InserirUsuariosTest(){
+    public void InserirUsuariosTest() {
         Usuario usuarioMockado = getMockObject();
         when(usuarioRepository.findById(usuarioMockado.getId())).thenReturn(Optional.of(usuarioMockado));
         when(usuarioRepository.save(usuarioMockado)).thenReturn((usuarioMockado));
@@ -104,4 +104,15 @@ public class usuarioServiceTeste {
         Mockito.verify(usuarioRepository, Mockito.times(1)).save(usuarioMockado);
     }
 
+    @Test
+    public void buscarUsuariosFiltradosTest() {
+        Usuario usuarioMockado = getMockObject();
+        List<Usuario> usuarios = usuarioServiceImpl.buscarUsuariosFiltrados(usuarioMockado.getNome(),
+                usuarioMockado.getCPF(), usuarioMockado.getDataNascimento(), usuarioMockado.getSexo());
+        when(usuarioRepository.findBy(usuarioMockado.getNome(), usuarioMockado.getCPF(), usuarioMockado.getDataNascimento(),
+                usuarioMockado.getSexo())).thenReturn(usuarios);
+
+        Mockito.verify(usuarioRepository, Mockito.times(1)).findBy(usuarioMockado.getNome(),
+                usuarioMockado.getCPF(), usuarioMockado.getDataNascimento(), usuarioMockado.getSexo());
+    }
 }

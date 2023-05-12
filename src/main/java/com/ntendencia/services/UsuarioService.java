@@ -8,37 +8,52 @@ import java.util.List;
 
 public interface UsuarioService {
 
-    //Tras informações detalhada sobre o usuario
-    public Usuario buscarUsuarioPorId(Integer id);
+    /**
+     * Tras informações detalhada sobre o usuario
+     */
 
-    //Incluir novo usuario com os seus endereços
-    public Usuario inserirNovoUsuario(Usuario obj);
+    Usuario buscarUsuarioPorId(Integer id);
 
-    //atualiza as informações do usuario
-    public Usuario atualizarUsuario(Usuario obj);
+    /**
+     * Incluir novo usuario com os seus endereços
+     */
 
-    //Deleta o usuario
-    public void excluirUsuario(Integer id);
+    Usuario inserirNovoUsuario(Usuario obj);
 
-    // Tras os usuarios no banco de dados
-    public List<Usuario> buscarTodosOsUsuarios();
+    /**
+     * Atualiza as informações do usuario
+     */
+
+    Usuario atualizarUsuario(Usuario obj);
+
+    /**
+     * Deleta o usuario
+     */
+    void excluirUsuario(Integer id);
+
+    /**
+     * Tras os usuarios no banco de dados
+     */
+
+    List<Usuario> buscarTodosOsUsuarios();
 
     /**
      * Busca todos os usuarios de forma paginada
      *
-     * @param page Quantidade de páginas
+     * @param page         Quantidade de páginas
      * @param linesPerPage Quantidade de usuario que aparece por pagina
-     * @param orderBy Ordernar por nome, cpf, data de nascimento e sexo
-     * @param direction Ordenar se &eacute; Ascendente ou Descendente */
-    public Page<Usuario> buscaPaginadaDeUsuario(Integer page, Integer linesPerPage, String orderBy, String direction);
+     * @param orderBy      Ordernar por nome, cpf, data de nascimento e sexo
+     * @param direction    Ordenar se Ascendente ou Descendente
+     */
+    Page<Usuario> buscaPaginadaDeUsuario(Integer page, Integer linesPerPage, String orderBy, String direction);
 
     /**
      * Busca usuario filtrando pode nome, cpf, data de nascimento e sexo
      *
-     * @param nome o nome do usuario
-     * @param cpf o cpf do usuario
+     * @param nome           o nome do usuario
+     * @param cpf            o cpf do usuario
      * @param dataNascimento a data de nascimento do usuario
-     * @param sexo o sexo do usuario
+     * @param sexo           o sexo do usuario
      */
-    public List<Usuario> buscarUsuariosFiltrados(String nome, String cpf, String dataNascimento, SexoUsuario sexo);
+    List<Usuario> buscarUsuariosFiltrados(String nome, String cpf, String dataNascimento, SexoUsuario sexo);
 }
