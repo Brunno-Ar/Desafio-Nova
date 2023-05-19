@@ -27,14 +27,16 @@ import java.util.Optional;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
-
     @Autowired
     private UsuarioRepository usuarioRepository;
-
     @Autowired
     private EnderecoRepository enderecoRepository;
-
     private final ModelMapper modelMapper = new ModelMapper();
+
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, EnderecoRepository enderecoRepository) {
+        this.usuarioRepository = usuarioRepository;
+        this.enderecoRepository = enderecoRepository;
+    }
 
     private Usuario buscarPorCPF(Usuario objDTO) {
         return usuarioRepository.findByCpf(objDTO.getCPF());
@@ -112,7 +114,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     public List<Usuario> buscarUsuariosFiltrados(String nome, String cpf, String dataNascimento, SexoUsuario sexo) {
         List<Usuario> usuario = usuarioRepository.findBy(nome, cpf, dataNascimento, sexo);
-        if (usuario == null) {
+        if (Objects.isNull(usuario)) {
             throw new ObjetoNaoEncontradoException(
                     Utils.getMensagemValidacao("usuario.nao.encontrado", nome, Usuario.class.getName()));
         }

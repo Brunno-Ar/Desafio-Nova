@@ -1,13 +1,13 @@
 package com.ntendencia.DTO;
 
-import java.io.Serializable;
-
-import javax.validation.constraints.NotEmpty;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ntendencia.domain.Usuario;
 import org.hibernate.validator.constraints.Length;
 
-import com.ntendencia.domain.Usuario;
+import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UsuarioDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 

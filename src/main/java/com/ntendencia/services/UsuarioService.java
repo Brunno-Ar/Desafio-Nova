@@ -10,24 +10,28 @@ public interface UsuarioService {
 
     /**
      * Tras informações detalhada sobre o usuario
+     * @param id    id do usuario
      */
 
     Usuario buscarUsuarioPorId(Integer id);
 
     /**
      * Incluir novo usuario com os seus endereços
+     * @param obj   Objeto do novo usuario
      */
 
     Usuario inserirNovoUsuario(Usuario obj);
 
     /**
      * Atualiza as informações do usuario
+     * @param obj   Objeto do usuario que será atualizado
      */
 
     Usuario atualizarUsuario(Usuario obj);
 
     /**
      * Deleta o usuario
+     * @param id    id do usuario que será deletado
      */
     void excluirUsuario(Integer id);
 
