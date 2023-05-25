@@ -1,7 +1,7 @@
 package com.ntendencia.services.impl;
 
-import com.ntendencia.DTO.UsuarioDTO;
-import com.ntendencia.DTO.UsuarioNewDTO;
+import com.ntendencia.dto.UsuarioDTO;
+import com.ntendencia.dto.UsuarioNewDTO;
 import com.ntendencia.domain.Cidade;
 import com.ntendencia.domain.Endereco;
 import com.ntendencia.domain.Usuario;

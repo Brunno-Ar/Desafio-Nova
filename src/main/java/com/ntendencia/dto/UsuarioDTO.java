@@ -1,4 +1,4 @@
-package com.ntendencia.DTO;
+package com.ntendencia.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ntendencia.domain.Usuario;

@@ -1,6 +1,7 @@
 package service;
 
-import com.ntendencia.DTO.UsuarioDTO;
+import com.ntendencia.dto.UsuarioDTO;
+import com.ntendencia.dto.UsuarioNewDTO;
 import com.ntendencia.domain.Usuario;
 import com.ntendencia.domain.enums.SexoUsuario;
 import com.ntendencia.repositories.CidadeRepository;
@@ -23,6 +24,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
@@ -37,7 +39,7 @@ import static org.mockito.Mockito.when;
 @SpringBootTest(classes = UsuarioServiceImpl.class)
 @RunWith(SpringRunner.class)
 @WebAppConfiguration
-public class UsuarioServiceTeste {
+public class UsuarioServiceTest {
 
     @InjectMocks
     private UsuarioServiceImpl usuarioServiceImpl;
@@ -54,11 +56,13 @@ public class UsuarioServiceTeste {
     @MockBean
     private EstadoRepository estadoRepository;
 
-    private final ModelMapper modelMapper = new ModelMapper();
+    @MockBean
+    private ModelMapper modelMapper;
 
     protected static final String MOCK_FOLDER = "/usuarioMock";
 
     protected static final String USUARIO_MOCK = "usuarioMock.json";
+    protected static final String USUARIONEWDTO_MOCK = "usuarioNewDTOMock.json";
 
     protected static Usuario getMockObject() {
         return Utils.getMockObject(MOCK_FOLDER, USUARIO_MOCK, Usuario.class);
@@ -68,7 +72,12 @@ public class UsuarioServiceTeste {
         return Utils.getMockObject(MOCK_FOLDER, USUARIO_MOCK, UsuarioDTO.class);
     }
 
-    @Before
+    protected static UsuarioNewDTO getMockObjectNewDTO() {
+        return Utils.getMockObject(MOCK_FOLDER, USUARIONEWDTO_MOCK, UsuarioNewDTO.class);
+    }
+
+
+        @Before
     public void setup() {
         MockitoAnnotations.openMocks(this);
     }
@@ -139,16 +148,16 @@ public class UsuarioServiceTeste {
         Mockito.verify(usuarioRepository, Mockito.times(1)).save(usuarioMockado);
     }
 
-//    @Test
-//    public void inserirUsuarioSeTiverCPFCadastradoTest(){
-//        Usuario usuarioMockado = getMockObject();
-//        when(usuarioRepository.findByCpf(usuarioMockado.getCPF()).getCPF()).thenReturn(null);
-//
-//        Throwable throwable = Assertions.catchThrowable(() -> usuarioServiceImpl.inserirNovoUsuario(usuarioMockado));
-//
-//        assertThat(throwable).isInstanceOf(IntegridadeDeDadosException.class)
-//                .hasMessageContaining("CPF já cadastrado na base de dados");
-//    }
+    @Test
+    public void inserirUsuarioSeTiverCPFCadastradoTest(){
+        Usuario usuarioMockado = getMockObject();
+        when(usuarioRepository.findByCpf(usuarioMockado.getCPF())).thenReturn(usuarioMockado);
+
+        Throwable throwable = Assertions.catchThrowable(() -> usuarioServiceImpl.inserirNovoUsuario(usuarioMockado));
+
+        assertThat(throwable).isInstanceOf(IntegridadeDeDadosException.class)
+                .hasMessageContaining("CPF já cadastrado na base de dados");
+    }
 
     @Test
     public void buscarUsuariosFiltradosTest() {
@@ -177,9 +186,22 @@ public class UsuarioServiceTeste {
     }
 
     @Test
+    public void buscaPaginadaDeUsuarioTest() {
+        Page<Usuario> usuariosPaginado =
+                usuarioServiceImpl.buscaPaginadaDeUsuario(0, 1,"id" , "ASC");
+
+    }
+    @Test
     public void inserirObjetoPeloDTOTest(){
         UsuarioDTO usuarioMockado = getMockObjectDTO();
         usuarioServiceImpl.inserirObjetoPeloDTO(usuarioMockado);
 
+    }
+
+    @Test
+    public void inserirObjetoPeloDTO() {
+        UsuarioNewDTO usuarioMockado = getMockObjectNewDTO();
+        when(modelMapper.map(Mockito.any(), Mockito.any())).thenReturn(usuarioMockado);
+        usuarioServiceImpl.inserirObjetoPeloDTO(usuarioMockado);
     }
 }

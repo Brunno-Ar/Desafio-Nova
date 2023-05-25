@@ -3,6 +3,7 @@ package com.ntendencia.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.ntendencia.services.exceptions.ErroAoCarregarJsonException;
 import org.springframework.lang.Nullable;
 
 import java.io.IOException;
@@ -14,7 +15,11 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class Utils {
-    private final static ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+    private static final  ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+
+    private Utils() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static String getMensagemValidacao(final String chaveMensagem, final Object... params) {
         ResourceBundle bundle = ResourceBundle.getBundle("Validation", Locale.getDefault());
@@ -35,7 +40,7 @@ public class Utils {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("Um erro ocorreu ao carregar o JSON de teste: " + filePath);
+            throw new ErroAoCarregarJsonException("Um erro ocorreu ao carregar o JSON de teste: " + filePath);
         }
     }
 

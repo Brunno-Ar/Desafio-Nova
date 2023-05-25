@@ -1,7 +1,7 @@
 package com.ntendencia.resources;
 
-import com.ntendencia.DTO.UsuarioDTO;
-import com.ntendencia.DTO.UsuarioNewDTO;
+import com.ntendencia.dto.UsuarioDTO;
+import com.ntendencia.dto.UsuarioNewDTO;
 import com.ntendencia.domain.Usuario;
 import com.ntendencia.domain.enums.SexoUsuario;
 import com.ntendencia.services.impl.UsuarioServiceImpl;
@@ -32,34 +32,33 @@ public class UsuarioResource {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Retorna a lista de pessoa"),
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
             @ApiResponse(code = 500, message = "Foi gerada uma exceção"),})
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/{id}")
     @ApiOperation(value = "Retornar um usuario pelo Id",
             notes = "Retornar um usuario pelo Id.",
             tags = {"buscar"})
     public ResponseEntity<Usuario> buscarUsuarioPorId(@PathVariable Integer id) {
         Usuario usuario = service.buscarUsuarioPorId(id);
         return ResponseEntity.ok().body(usuario);
-
     }
 
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @PutMapping(value = "/{id}")
     @ApiOperation(value = "Atualizar usuario",
             notes = "Modifica dados de um usuario na lista.",
             tags = {"inserir", "atualizar"})
-    public ResponseEntity atualizarUsuario(@Valid @RequestBody UsuarioDTO objDto, @PathVariable Integer id) {
+    public ResponseEntity<String> atualizarUsuario(@Valid @RequestBody UsuarioDTO objDto, @PathVariable Integer id) {
         Usuario obj = service.inserirObjetoPeloDTO(objDto);
         obj.setId(id);
-        obj = service.atualizarUsuario(obj);
+        service.atualizarUsuario(obj);
         return ResponseEntity.ok("Usuario atualizado com sucesso ");
     }
 
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     @ApiOperation(value = "Apagar usuario",
             notes = "Deleta um usuario da lista .",
             tags = {"deletar"})
-    public ResponseEntity excluirUsuario(@PathVariable Integer id) {
+    public ResponseEntity<Usuario> excluirUsuario(@PathVariable Integer id) {
         service.excluirUsuario(id);
         return ResponseEntity.noContent().build();
     }
@@ -67,7 +66,7 @@ public class UsuarioResource {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Retorna a lista de pessoa"),
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
             @ApiResponse(code = 500, message = "Foi gerada uma exceção"),})
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     @ApiOperation(value = "Retornar todos os usuario",
             notes = "Retornar todos os usuario.",
             tags = {"buscar"})
@@ -81,7 +80,7 @@ public class UsuarioResource {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Retorna a lista de pessoa"),
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
             @ApiResponse(code = 500, message = "Foi gerada uma exceção"),})
-    @RequestMapping(value = "/page", method = RequestMethod.GET)
+    @GetMapping(value = "/page")
     @ApiOperation(value = "Retornar usuarios de forma paginada",
             notes = "Retornar usuarios de forma paginada. Quantos objetos retornar por pagina, Odernar por nome, CPF, " +
                     "data de nascimento ou a direção ASC e DESC .",
@@ -98,11 +97,11 @@ public class UsuarioResource {
     }
 
 
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     @ApiOperation(value = "Adicionar novo usuario",
             notes = "Adiciona um novo usuario na lista.",
             tags = {"inserir"})
-    public ResponseEntity inserirNovoUsuario(@Valid @RequestBody UsuarioNewDTO objDto) {
+    public ResponseEntity<String> inserirNovoUsuario(@Valid @RequestBody UsuarioNewDTO objDto) {
         Usuario obj = service.inserirObjetoPeloDTO(objDto);
         obj = service.inserirNovoUsuario(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
@@ -112,7 +111,7 @@ public class UsuarioResource {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Retorna a lista de pessoa"),
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
             @ApiResponse(code = 500, message = "Foi gerada uma exceção"),})
-    @RequestMapping(value = "/filters", method = RequestMethod.GET)
+    @GetMapping(value = "/filters")
     @ApiOperation(value = "Retornar usuario usando filtros",
             notes = "Retornar usuario usando filtros.",
             tags = {"buscar"})

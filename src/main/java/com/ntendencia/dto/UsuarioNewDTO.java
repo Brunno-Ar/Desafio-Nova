@@ -1,4 +1,4 @@
-package com.ntendencia.DTO;
+package com.ntendencia.dto;
 
 import com.ntendencia.domain.enums.SexoUsuario;
 import org.hibernate.validator.constraints.Length;
