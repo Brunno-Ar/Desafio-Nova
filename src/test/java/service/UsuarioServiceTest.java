@@ -8,6 +8,7 @@ import com.ntendencia.repositories.CidadeRepository;
 import com.ntendencia.repositories.EnderecoRepository;
 import com.ntendencia.repositories.EstadoRepository;
 import com.ntendencia.repositories.UsuarioRepository;
+import com.ntendencia.services.UsuarioService;
 import com.ntendencia.services.Utils;
 import com.ntendencia.services.exceptions.IntegridadeDeDadosException;
 import com.ntendencia.services.exceptions.ObjetoNaoEncontradoException;
@@ -44,8 +45,6 @@ import static org.mockito.Mockito.when;
 @WebAppConfiguration
 public class UsuarioServiceTest {
 
-    @InjectMocks
-    private UsuarioServiceImpl usuarioServiceImpl;
 
     @MockBean
     private UsuarioRepository usuarioRepository;
@@ -61,6 +60,13 @@ public class UsuarioServiceTest {
 
     @MockBean
     private ModelMapper modelMapper;
+
+    @InjectMocks
+    private UsuarioServiceImpl service;
+
+    private UsuarioService service(){
+        return new UsuarioServiceImpl(usuarioRepository, enderecoRepository);
+    }
 
     protected static final String MOCK_FOLDER = "/usuarioMock";
 
@@ -89,7 +95,7 @@ public class UsuarioServiceTest {
     public void buscaUsuarioPorIdTest() {
         Usuario usuarioMockado = getMockObject();
         when(usuarioRepository.findById(usuarioMockado.getId())).thenReturn(Optional.of(usuarioMockado));
-        Usuario usuario = usuarioServiceImpl.buscarUsuarioPorId(usuarioMockado.getId());
+        Usuario usuario = service().buscarUsuarioPorId(usuarioMockado.getId());
 
         assertEquals(usuario, usuarioMockado);
     }
@@ -99,7 +105,7 @@ public class UsuarioServiceTest {
         Usuario usuarioMockado = getMockObject();
         when(usuarioRepository.findById(usuarioMockado.getId())).thenReturn(null);
 
-        Throwable throwable = Assertions.catchThrowable(() -> usuarioServiceImpl
+        Throwable throwable = Assertions.catchThrowable(() -> service()
                 .buscarUsuarioPorId(usuarioMockado.getId()));
 
         assertThat(throwable).isInstanceOf(ObjetoNaoEncontradoException.class)
@@ -109,7 +115,7 @@ public class UsuarioServiceTest {
     @Test
     public void buscaTodosUsuariosTest() {
         Usuario usuarioMockado = getMockObject();
-        List<Usuario> usuarios = usuarioServiceImpl.buscarTodosOsUsuarios();
+        List<Usuario> usuarios = service().buscarTodosOsUsuarios();
         usuarios.add(usuarioMockado);
         when(usuarioRepository.findAll()).thenReturn(usuarios);
 
@@ -123,20 +129,20 @@ public class UsuarioServiceTest {
         Usuario novoUsuarioMockaco = new Usuario(1, "Breno", "123.123.123.23", "16/03/2003",
                 SexoUsuario.MASCULINO);
         when(usuarioRepository.findById(usuarioMockado.getId())).thenReturn(Optional.of(usuarioMockado));
-        usuarioServiceImpl.atualizarUsuario(novoUsuarioMockaco);
+        service().atualizarUsuario(novoUsuarioMockaco);
         Mockito.verify(usuarioRepository, Mockito.times(1)).save(novoUsuarioMockaco);
     }
 
     @Test
     public void removerUsuariosTest() {
-        usuarioServiceImpl.excluirUsuario(1);
+        service().excluirUsuario(1);
         Mockito.verify(usuarioRepository, Mockito.times(1)).deleteById(1);
     }
 
     @Test
     public void removerUsuariosTestQuandoUsuarioTemEndereco() {
         doThrow(new DataIntegrityViolationException("")).when(usuarioRepository).deleteById(1);
-        Throwable throwable = Assertions.catchThrowable(() -> usuarioServiceImpl.excluirUsuario(1));
+        Throwable throwable = Assertions.catchThrowable(() -> service().excluirUsuario(1));
         assertThat(throwable).isInstanceOf(IntegridadeDeDadosException.class)
                 .hasMessageContaining("Não é possivel excluir usuarios que contém Endereço");
     }
@@ -147,7 +153,7 @@ public class UsuarioServiceTest {
         when(usuarioRepository.findById(usuarioMockado.getId())).thenReturn(Optional.of(usuarioMockado));
         when(usuarioRepository.save(usuarioMockado)).thenReturn((usuarioMockado));
 
-        usuarioServiceImpl.inserirNovoUsuario(usuarioMockado);
+        service().inserirNovoUsuario(usuarioMockado);
         Mockito.verify(usuarioRepository, Mockito.times(1)).save(usuarioMockado);
     }
 
@@ -156,7 +162,7 @@ public class UsuarioServiceTest {
         Usuario usuarioMockado = getMockObject();
         when(usuarioRepository.findByCpf(usuarioMockado.getCPF())).thenReturn(usuarioMockado);
 
-        Throwable throwable = Assertions.catchThrowable(() -> usuarioServiceImpl.inserirNovoUsuario(usuarioMockado));
+        Throwable throwable = Assertions.catchThrowable(() -> service().inserirNovoUsuario(usuarioMockado));
 
         assertThat(throwable).isInstanceOf(IntegridadeDeDadosException.class)
                 .hasMessageContaining("CPF já cadastrado na base de dados");
@@ -165,7 +171,7 @@ public class UsuarioServiceTest {
     @Test
     public void buscarUsuariosFiltradosTest() {
         Usuario usuarioMockado = getMockObject();
-        List<Usuario> usuarios = usuarioServiceImpl.buscarUsuariosFiltrados(usuarioMockado.getNome(),
+        List<Usuario> usuarios = service().buscarUsuariosFiltrados(usuarioMockado.getNome(),
                 usuarioMockado.getCPF(), usuarioMockado.getDataNascimento(), usuarioMockado.getSexo());
         when(usuarioRepository.findBy(usuarioMockado.getNome(), usuarioMockado.getCPF(), usuarioMockado.getDataNascimento(),
                 usuarioMockado.getSexo())).thenReturn(usuarios);
@@ -180,7 +186,7 @@ public class UsuarioServiceTest {
         when(usuarioRepository.findBy(usuarioMockado.getNome(), usuarioMockado.getCPF(), usuarioMockado.getDataNascimento(),
                 usuarioMockado.getSexo())).thenReturn(null);
 
-        Throwable throwable = Assertions.catchThrowable(() -> usuarioServiceImpl
+        Throwable throwable = Assertions.catchThrowable(() -> service()
                 .buscarUsuariosFiltrados(usuarioMockado.getNome(), usuarioMockado.getCPF(),
                         usuarioMockado.getDataNascimento(), usuarioMockado.getSexo()));
 
@@ -195,7 +201,7 @@ public class UsuarioServiceTest {
         when(usuarioRepository.findAll(pageRequest))
                 .thenReturn(new PageImpl<>((Collections.singletonList(usuario))));
         Page<Usuario> usuariosPaginado =
-                usuarioServiceImpl.buscaPaginadaDeUsuario(0, 10,"id" , "ASC");
+                service().buscaPaginadaDeUsuario(0, 10,"id" , "ASC");
 
         assertEquals(1, usuariosPaginado.getContent().size());
         assertEquals(1, usuariosPaginado.getTotalElements());
@@ -203,7 +209,7 @@ public class UsuarioServiceTest {
     @Test
     public void inserirObjetoPeloDTOTest(){
         UsuarioDTO usuarioMockado = getMockObjectDTO();
-        Usuario usuario = usuarioServiceImpl.inserirObjetoPeloDTO(usuarioMockado);
+        Usuario usuario = service().inserirObjetoPeloDTO(usuarioMockado);
 
         assertEquals(usuario.getNome() , usuarioMockado.getNome());
     }
@@ -212,7 +218,7 @@ public class UsuarioServiceTest {
     public void inserirObjetoPeloDTO() {
         UsuarioNewDTO usuarioMockado = getMockObjectNewDTO();
         when(modelMapper.map(Mockito.any(), Mockito.any())).thenReturn(Optional.of(usuarioMockado));
-        Usuario usuario = usuarioServiceImpl.inserirObjetoPeloDTO(usuarioMockado);
+        Usuario usuario = service().inserirObjetoPeloDTO(usuarioMockado);
 
         assertEquals(usuario.getCPF(), usuarioMockado.getcpf());
     }

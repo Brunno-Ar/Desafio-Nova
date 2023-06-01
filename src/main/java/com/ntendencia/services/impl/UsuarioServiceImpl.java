@@ -26,17 +26,9 @@ import java.util.Optional;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
-    private UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    private EnderecoRepository enderecoRepository;
-
-    public void usuarioRepository(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
-    }
-
-    public void enderecoRepository(EnderecoRepository enderecoRepository) {
-        this.enderecoRepository = enderecoRepository;
-    }
+    private final EnderecoRepository enderecoRepository;
 
     private final ModelMapper modelMapper = new ModelMapper();
 

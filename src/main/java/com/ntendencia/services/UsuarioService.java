@@ -2,6 +2,8 @@ package com.ntendencia.services;
 
 import com.ntendencia.domain.Usuario;
 import com.ntendencia.domain.enums.SexoUsuario;
+import com.ntendencia.dto.UsuarioDTO;
+import com.ntendencia.dto.UsuarioNewDTO;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -60,4 +62,8 @@ public interface UsuarioService {
      * @param sexo           o sexo do usuario
      */
     List<Usuario> buscarUsuariosFiltrados(String nome, String cpf, String dataNascimento, SexoUsuario sexo);
+
+    Usuario inserirObjetoPeloDTO(UsuarioDTO objDto);
+
+    Usuario inserirObjetoPeloDTO(UsuarioNewDTO objDto);
 }
