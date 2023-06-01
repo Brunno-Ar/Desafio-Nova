@@ -30,9 +30,6 @@ public class UsuarioNewDTO implements Serializable {
     private String complemento;
     private Integer cidadeId;
 
-    public UsuarioNewDTO() {
-    }
-
     public String getNome() {
         return nome;
     }

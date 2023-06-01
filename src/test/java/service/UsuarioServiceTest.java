@@ -1,9 +1,9 @@
 package service;
 
-import com.ntendencia.dto.UsuarioDTO;
-import com.ntendencia.dto.UsuarioNewDTO;
 import com.ntendencia.domain.Usuario;
 import com.ntendencia.domain.enums.SexoUsuario;
+import com.ntendencia.dto.UsuarioDTO;
+import com.ntendencia.dto.UsuarioNewDTO;
 import com.ntendencia.repositories.CidadeRepository;
 import com.ntendencia.repositories.EnderecoRepository;
 import com.ntendencia.repositories.EstadoRepository;
@@ -13,7 +13,6 @@ import com.ntendencia.services.exceptions.IntegridadeDeDadosException;
 import com.ntendencia.services.exceptions.ObjetoNaoEncontradoException;
 import com.ntendencia.services.impl.UsuarioServiceImpl;
 import org.assertj.core.api.Assertions;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,9 +24,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -110,7 +113,7 @@ public class UsuarioServiceTest {
         usuarios.add(usuarioMockado);
         when(usuarioRepository.findAll()).thenReturn(usuarios);
 
-        Assert.assertEquals(1, usuarios.size());
+        assertEquals(1, usuarios.size());
     }
 
     @Test
@@ -187,21 +190,30 @@ public class UsuarioServiceTest {
 
     @Test
     public void buscaPaginadaDeUsuarioTest() {
+        Usuario usuario = getMockObject();
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.Direction.valueOf("ASC"), "id");
+        when(usuarioRepository.findAll(pageRequest))
+                .thenReturn(new PageImpl<>((Collections.singletonList(usuario))));
         Page<Usuario> usuariosPaginado =
-                usuarioServiceImpl.buscaPaginadaDeUsuario(0, 1,"id" , "ASC");
+                usuarioServiceImpl.buscaPaginadaDeUsuario(0, 10,"id" , "ASC");
 
+        assertEquals(1, usuariosPaginado.getContent().size());
+        assertEquals(1, usuariosPaginado.getTotalElements());
     }
     @Test
     public void inserirObjetoPeloDTOTest(){
         UsuarioDTO usuarioMockado = getMockObjectDTO();
-        usuarioServiceImpl.inserirObjetoPeloDTO(usuarioMockado);
+        Usuario usuario = usuarioServiceImpl.inserirObjetoPeloDTO(usuarioMockado);
 
+        assertEquals(usuario.getNome() , usuarioMockado.getNome());
     }
 
     @Test
     public void inserirObjetoPeloDTO() {
         UsuarioNewDTO usuarioMockado = getMockObjectNewDTO();
-        when(modelMapper.map(Mockito.any(), Mockito.any())).thenReturn(usuarioMockado);
-        usuarioServiceImpl.inserirObjetoPeloDTO(usuarioMockado);
+        when(modelMapper.map(Mockito.any(), Mockito.any())).thenReturn(Optional.of(usuarioMockado));
+        Usuario usuario = usuarioServiceImpl.inserirObjetoPeloDTO(usuarioMockado);
+
+        assertEquals(usuario.getCPF(), usuarioMockado.getcpf());
     }
 }

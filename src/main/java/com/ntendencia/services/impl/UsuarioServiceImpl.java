@@ -1,11 +1,11 @@
 package com.ntendencia.services.impl;
 
-import com.ntendencia.dto.UsuarioDTO;
-import com.ntendencia.dto.UsuarioNewDTO;
 import com.ntendencia.domain.Cidade;
 import com.ntendencia.domain.Endereco;
 import com.ntendencia.domain.Usuario;
 import com.ntendencia.domain.enums.SexoUsuario;
+import com.ntendencia.dto.UsuarioDTO;
+import com.ntendencia.dto.UsuarioNewDTO;
 import com.ntendencia.repositories.EnderecoRepository;
 import com.ntendencia.repositories.UsuarioRepository;
 import com.ntendencia.services.UsuarioService;
@@ -13,7 +13,6 @@ import com.ntendencia.services.Utils;
 import com.ntendencia.services.exceptions.IntegridadeDeDadosException;
 import com.ntendencia.services.exceptions.ObjetoNaoEncontradoException;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,10 +26,18 @@ import java.util.Optional;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
-    @Autowired
     private UsuarioRepository usuarioRepository;
-    @Autowired
+
     private EnderecoRepository enderecoRepository;
+
+    public void usuarioRepository(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
+
+    public void enderecoRepository(EnderecoRepository enderecoRepository) {
+        this.enderecoRepository = enderecoRepository;
+    }
+
     private final ModelMapper modelMapper = new ModelMapper();
 
     public UsuarioServiceImpl(UsuarioRepository usuarioRepository, EnderecoRepository enderecoRepository) {
