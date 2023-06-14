@@ -1,11 +1,13 @@
 package service;
 
+import com.ntendencia.domain.Cidade;
+import com.ntendencia.domain.Endereco;
+import com.ntendencia.domain.Estado;
 import com.ntendencia.domain.Usuario;
 import com.ntendencia.domain.enums.SexoUsuario;
 import com.ntendencia.dto.UsuarioDTO;
 import com.ntendencia.dto.UsuarioNewDTO;
 import com.ntendencia.repositories.CidadeRepository;
-import com.ntendencia.repositories.EnderecoRepository;
 import com.ntendencia.repositories.EstadoRepository;
 import com.ntendencia.repositories.UsuarioRepository;
 import com.ntendencia.services.UsuarioService;
@@ -65,7 +67,7 @@ public class UsuarioServiceTest {
     private UsuarioServiceImpl service;
 
     private UsuarioService service(){
-        return new UsuarioServiceImpl(usuarioRepository, enderecoRepository);
+        return new UsuarioServiceImpl(usuarioRepository);
     }
 
     protected static final String MOCK_FOLDER = "/usuarioMock";
@@ -124,10 +126,15 @@ public class UsuarioServiceTest {
 
     @Test
     public void atualizarDadosUsuarioTest() {
+        Estado est1 = new Estado(null, "Rio de Janeiro");
+        Cidade c1 = new Cidade(null, "Rio de Janeiro", est1);
+        Endereco endereco1 = new Endereco( "Ao lado da estacao", "4817", "casa 10",
+                "Rj", "22783127", c1);
+
         Usuario usuarioMockado = new Usuario(1, "Bruno", "123.123.123.23", "03/02/2003",
-                SexoUsuario.MASCULINO);
+                SexoUsuario.MASCULINO, endereco1);
         Usuario novoUsuarioMockaco = new Usuario(1, "Breno", "123.123.123.23", "16/03/2003",
-                SexoUsuario.MASCULINO);
+                SexoUsuario.MASCULINO ,endereco1);
         when(usuarioRepository.findById(usuarioMockado.getId())).thenReturn(Optional.of(usuarioMockado));
         service().atualizarUsuario(novoUsuarioMockaco);
         Mockito.verify(usuarioRepository, Mockito.times(1)).save(novoUsuarioMockaco);
@@ -214,12 +221,4 @@ public class UsuarioServiceTest {
         assertEquals(usuario.getNome() , usuarioMockado.getNome());
     }
 
-    @Test
-    public void inserirObjetoPeloDTO() {
-        UsuarioNewDTO usuarioMockado = getMockObjectNewDTO();
-        when(modelMapper.map(Mockito.any(), Mockito.any())).thenReturn(Optional.of(usuarioMockado));
-        Usuario usuario = service().inserirObjetoPeloDTO(usuarioMockado);
-
-        assertEquals(usuario.getCPF(), usuarioMockado.getcpf());
-    }
 }

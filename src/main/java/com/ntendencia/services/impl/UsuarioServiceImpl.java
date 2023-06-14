@@ -1,12 +1,9 @@
 package com.ntendencia.services.impl;
 
-import com.ntendencia.domain.Cidade;
-import com.ntendencia.domain.Endereco;
 import com.ntendencia.domain.Usuario;
 import com.ntendencia.domain.enums.SexoUsuario;
 import com.ntendencia.dto.UsuarioDTO;
 import com.ntendencia.dto.UsuarioNewDTO;
-import com.ntendencia.repositories.EnderecoRepository;
 import com.ntendencia.repositories.UsuarioRepository;
 import com.ntendencia.services.UsuarioService;
 import com.ntendencia.services.Utils;
@@ -28,19 +25,18 @@ import java.util.Optional;
 public class UsuarioServiceImpl implements UsuarioService {
     private final UsuarioRepository usuarioRepository;
 
-    private final EnderecoRepository enderecoRepository;
 
     private final ModelMapper modelMapper = new ModelMapper();
 
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, EnderecoRepository enderecoRepository) {
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
-        this.enderecoRepository = enderecoRepository;
     }
 
     private Usuario buscarPorCPF(Usuario objDTO) {
         return usuarioRepository.findByCpf(objDTO.getCPF());
     }
 
+    @Override
     public Usuario buscarUsuarioPorId(Integer id) {
         Optional<Usuario> usuario;
         usuario = usuarioRepository.findById(id);
@@ -50,24 +46,26 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuario.orElse(null);
     }
 
+    @Override
     @Transactional
-    public Usuario inserirNovoUsuario(Usuario obj) {
-        if (Objects.nonNull(buscarPorCPF(obj))) {
+    public Usuario inserirNovoUsuario(UsuarioNewDTO usuarioNewDTO) {
+        Usuario usuario = modelMapper.map(usuarioNewDTO, Usuario.class);
+        if (Objects.nonNull(buscarPorCPF(usuario))) {
             throw new IntegridadeDeDadosException(
                     Utils.getMensagemValidacao("cpf.cadastrado"));
         }
-        obj.setId(null);
-        obj = usuarioRepository.save(obj);
-        enderecoRepository.saveAll(obj.getEnderecos());
-        return obj;
+        return usuarioRepository.save(usuario);
+
     }
 
+    @Override
     public Usuario atualizarUsuario(Usuario obj) {
         Usuario newObj = buscarUsuarioPorId(obj.getId());
         atualizaObjeto(newObj, obj);
         return usuarioRepository.save(newObj);
     }
 
+    @Override
     public void excluirUsuario(Integer id) {
         buscarUsuarioPorId(id);
         try {
@@ -78,39 +76,29 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
     }
 
+    @Override
     public List<Usuario> buscarTodosOsUsuarios() {
 
         return usuarioRepository.findAll();
     }
 
-
+    @Override
     public Page<Usuario> buscaPaginadaDeUsuario(Integer page, Integer linesPerPage, String orderBy, String direction) {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
         return usuarioRepository.findAll(pageRequest);
     }
 
+    @Override
     public Usuario inserirObjetoPeloDTO(UsuarioDTO objDto) {
 
         return modelMapper.map(objDto, Usuario.class);
-    }
-
-    public Usuario inserirObjetoPeloDTO(UsuarioNewDTO objDto) {
-        Usuario usuario = modelMapper.map(objDto, Usuario.class);
-
-        Cidade cid = new Cidade(objDto.getCidadeId(), null, null);
-
-        Endereco end = new Endereco(null, objDto.getLogradouro(), objDto.getNumero(), objDto.getComplemento(),
-                objDto.getBairro(), objDto.getCep(), usuario, cid);
-
-        usuario.getEnderecos().add(end);
-
-        return usuario;
     }
 
     private void atualizaObjeto(Usuario newObj, Usuario obj) {
         newObj.setNome(obj.getNome());
     }
 
+    @Override
     public List<Usuario> buscarUsuariosFiltrados(String nome, String cpf, String dataNascimento, SexoUsuario sexo) {
         List<Usuario> usuario = usuarioRepository.findBy(nome, cpf, dataNascimento, sexo);
         if (Objects.isNull(usuario)) {

@@ -1,13 +1,10 @@
 package com.ntendencia.domain;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import com.ntendencia.domain.enums.SexoUsuario;
 
 import javax.persistence.*;
-
-import com.ntendencia.domain.enums.SexoUsuario;
+import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 public class Usuario implements Serializable {
@@ -21,21 +18,22 @@ public class Usuario implements Serializable {
 	private String dataNascimento;
 	@Enumerated(EnumType.STRING)
 	private SexoUsuario sexo;
-	
-	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-	private List<Endereco> enderecos = new ArrayList<>();
+
+	@Embedded
+	private Endereco endereco;
 
 	public Usuario() {
 
 	}
 
-	public Usuario(Integer id, String nome, String cpf, String dataNascimento, SexoUsuario sexo) {
+	public Usuario(Integer id, String nome, String cpf, String dataNascimento, SexoUsuario sexo, Endereco endereco) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.cpf = cpf;
 		this.dataNascimento = dataNascimento;
 		this.sexo = sexo;
+		this.endereco = endereco;
 	}
 
 	public Integer getId() {
@@ -70,12 +68,12 @@ public class Usuario implements Serializable {
 		this.dataNascimento = dataNascimento;
 	}
 
-	public List<Endereco> getEnderecos() {
-		return enderecos;
+	public Endereco getEndereco() {
+		return endereco;
 	}
 
-	public void setEnderecos(List<Endereco> enderecos) {
-		this.enderecos = enderecos;
+	public void setEndereco(Endereco enderecos) {
+		this.endereco = enderecos;
 	}
 
 	public SexoUsuario getSexo() {
@@ -111,7 +109,7 @@ public class Usuario implements Serializable {
 				", cpf='" + cpf + '\'' +
 				", dataNascimento='" + dataNascimento + '\'' +
 				", sexo=" + sexo +
-				", enderecos=" + enderecos +
+				", enderecos=" + endereco +
 				'}';
 	}
 }

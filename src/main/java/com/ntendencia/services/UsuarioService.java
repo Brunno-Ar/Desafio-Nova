@@ -22,7 +22,7 @@ public interface UsuarioService {
      * @param obj   Objeto do novo usuario
      */
 
-    Usuario inserirNovoUsuario(Usuario obj);
+    Usuario inserirNovoUsuario(UsuarioNewDTO obj);
 
     /**
      * Atualiza as informações do usuario
@@ -65,5 +65,4 @@ public interface UsuarioService {
 
     Usuario inserirObjetoPeloDTO(UsuarioDTO objDto);
 
-    Usuario inserirObjetoPeloDTO(UsuarioNewDTO objDto);
 }

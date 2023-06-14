@@ -1,62 +1,36 @@
 package com.ntendencia.domain;
 
-import java.io.Serializable;
-import java.util.Objects;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.io.Serializable;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-@Entity
+@Embeddable
 public class Endereco implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	@JoinColumn(name = "endereco_bairro")
 	private String bairro;
+	@JoinColumn(name = "endereco_numero")
 	private String numero;
+	@JoinColumn(name = "endereco_cep")
 	private String cep;
+	@JoinColumn(name = "endereco_logradouro")
 	private String logradouro;
+	@JoinColumn(name = "endereco_complemento")
 	private String complemento;
-
-	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "usuario_id")
-	private Usuario usuario;
 
 	@ManyToOne
 	@JoinColumn(name = "cidade_id")
 	private Cidade cidade;
 
-	public Endereco() {
-
-	}
-
-	public Endereco(Integer id, String logradouro, String numero, String complemento, String bairro, String cep,
-			Usuario usuario, Cidade cidade) {
-		super();
-		this.id = id;
-		this.logradouro = logradouro;
-		this.numero = numero;
-		this.complemento = complemento;
+	public Endereco(String bairro, String numero, String cep, String logradouro, String complemento, Cidade cidade) {
 		this.bairro = bairro;
+		this.numero = numero;
 		this.cep = cep;
-		this.usuario = usuario;
-		this.setCidade(cidade);
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
+		this.logradouro = logradouro;
+		this.complemento = complemento;
+		this.cidade = cidade;
 	}
 
 	public String getLogradouro() {
@@ -99,14 +73,6 @@ public class Endereco implements Serializable {
 		this.cep = cep;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-
 	public Cidade getCidade() {
 		return cidade;
 	}
@@ -115,20 +81,4 @@ public class Endereco implements Serializable {
 		this.cidade = cidade;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Endereco other = (Endereco) obj;
-		return Objects.equals(id, other.id);
-	}
 }

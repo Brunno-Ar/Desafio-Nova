@@ -4,6 +4,7 @@ import com.ntendencia.dto.UsuarioDTO;
 import com.ntendencia.dto.UsuarioNewDTO;
 import com.ntendencia.domain.Usuario;
 import com.ntendencia.domain.enums.SexoUsuario;
+import com.ntendencia.services.UsuarioService;
 import com.ntendencia.services.impl.UsuarioServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,9 +26,11 @@ import java.util.stream.Collectors;
 @Api(value = "UsuarioResource", tags = {"Operações de usuario"})
 public class UsuarioResource {
 
-    @Autowired
-    private UsuarioServiceImpl service;
+    private final UsuarioService service;
 
+    public UsuarioResource(UsuarioService service) {
+        this.service = service;
+    }
 
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Retorna a lista de pessoa"),
             @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
@@ -102,8 +105,7 @@ public class UsuarioResource {
             notes = "Adiciona um novo usuario na lista.",
             tags = {"inserir"})
     public ResponseEntity<String> inserirNovoUsuario(@Valid @RequestBody UsuarioNewDTO objDto) {
-        Usuario obj = service.inserirObjetoPeloDTO(objDto);
-        obj = service.inserirNovoUsuario(obj);
+        Usuario obj = service.inserirNovoUsuario(objDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).body("Usuario criado com sucesso");
     }

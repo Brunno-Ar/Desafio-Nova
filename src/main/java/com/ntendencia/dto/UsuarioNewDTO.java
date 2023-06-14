@@ -21,14 +21,8 @@ public class UsuarioNewDTO implements Serializable {
     @NotEmpty(message = "{dataNascimento.obrigatorio}")
     private String dataNascimento;
     private SexoUsuario sexo;
-    @NotEmpty(message = "{bairro.obrigatorio}")
-    private String bairro;
-    private String numero;
-    @NotEmpty(message = "{cep.obrigatorio}")
-    private String cep;
-    private String logradouro;
-    private String complemento;
-    private Integer cidadeId;
+
+    private EnderecoDTO enderecoDTO;
 
     public String getNome() {
         return nome;
@@ -62,51 +56,11 @@ public class UsuarioNewDTO implements Serializable {
         this.sexo = sexo;
     }
 
-    public String getBairro() {
-        return bairro;
+    public EnderecoDTO getEnderecoDTO() {
+        return enderecoDTO;
     }
 
-    public void setBairro(String bairro) {
-        this.bairro = bairro;
-    }
-
-    public String getNumero() {
-        return numero;
-    }
-
-    public void setNumero(String numero) {
-        this.numero = numero;
-    }
-
-    public String getCep() {
-        return cep;
-    }
-
-    public void setCep(String cep) {
-        this.cep = cep;
-    }
-
-    public String getLogradouro() {
-        return logradouro;
-    }
-
-    public void setLogradouro(String logradouro) {
-        this.logradouro = logradouro;
-    }
-
-    public String getComplemento() {
-        return complemento;
-    }
-
-    public void setComplemento(String complemento) {
-        this.complemento = complemento;
-    }
-
-    public Integer getCidadeId() {
-        return cidadeId;
-    }
-
-    public void setCidadeId(Integer cidadeId) {
-        this.cidadeId = cidadeId;
+    public void setEnderecoDTO(EnderecoDTO enderecoDTO) {
+        this.enderecoDTO = enderecoDTO;
     }
 }
