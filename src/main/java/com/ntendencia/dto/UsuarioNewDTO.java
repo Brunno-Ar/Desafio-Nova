@@ -32,7 +32,7 @@ public class UsuarioNewDTO implements Serializable {
         this.nome = nome;
     }
 
-    public String getcpf() {
+    public String getCpf() {
         return cpf;
     }
 

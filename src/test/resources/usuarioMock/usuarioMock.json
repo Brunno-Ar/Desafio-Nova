@@ -1,23 +1,22 @@
 {
-  "cpf": "938.761.720-39",
-  "dataNascimento": "07/12/2000",
-  "enderecos": [
-    {
-      "bairro": "Santa Cruz",
-      "cep": "22783127",
-      "cidade": {
-        "estado": {
-          "id": 2,
-          "nome": "Rio de Janeiro"
-        },
-        "id": 1,
+  "id": 1,
+  "nome": "Bruno",
+  "cpf": "123.123.123.23",
+  "dataNascimento": "03/02/2003",
+  "sexo": "MASCULINO",
+  "endereco": {
+    "bairro": "Ao lado da estacao",
+    "numero": "4817",
+    "cep": "casa 10",
+    "logradouro": "Rj",
+    "complemento": "22783127",
+    "cidade": {
+      "id": 7,
+      "nome": "Rio de Janeiro",
+      "estado": {
+        "id": 5,
         "nome": "Rio de Janeiro"
-      },
-      "complemento": "Casa 8",
-      "logradouro": "Estrada Manguariba, Santa Cruz, Rio de Janeiro",
-      "numero": "4817"
+      }
     }
-  ],
-  "nome": "Brenda",
-  "sexo": "FEMININO"
+  }
 }

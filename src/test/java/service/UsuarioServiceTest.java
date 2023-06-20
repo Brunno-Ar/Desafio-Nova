@@ -52,15 +52,11 @@ public class UsuarioServiceTest {
     private UsuarioRepository usuarioRepository;
 
     @MockBean
-    private EnderecoRepository enderecoRepository;
-
-    @MockBean
     private CidadeRepository cidadeRepository;
 
     @MockBean
     private EstadoRepository estadoRepository;
 
-    @MockBean
     private ModelMapper modelMapper;
 
     @InjectMocks
@@ -91,6 +87,7 @@ public class UsuarioServiceTest {
         @Before
     public void setup() {
         MockitoAnnotations.openMocks(this);
+        this.modelMapper = new ModelMapper();
     }
 
     @Test
@@ -156,18 +153,20 @@ public class UsuarioServiceTest {
 
     @Test
     public void inserirUsuariosTest() {
-        Usuario usuarioMockado = getMockObject();
-        when(usuarioRepository.findById(usuarioMockado.getId())).thenReturn(Optional.of(usuarioMockado));
-        when(usuarioRepository.save(usuarioMockado)).thenReturn((usuarioMockado));
+        UsuarioNewDTO usuarioMockado = getMockObjectNewDTO();
+        Usuario usuario = modelMapper.map(usuarioMockado, Usuario.class);
+        when(usuarioRepository.findByCpf(usuarioMockado.getCpf())).thenReturn(null);
+        when(usuarioRepository.save(usuario)).thenReturn((usuario));
 
         service().inserirNovoUsuario(usuarioMockado);
-        Mockito.verify(usuarioRepository, Mockito.times(1)).save(usuarioMockado);
+        Mockito.verify(usuarioRepository, Mockito.times(1)).save(usuario);
     }
 
     @Test
     public void inserirUsuarioSeTiverCPFCadastradoTest(){
-        Usuario usuarioMockado = getMockObject();
-        when(usuarioRepository.findByCpf(usuarioMockado.getCPF())).thenReturn(usuarioMockado);
+        UsuarioNewDTO usuarioMockado = getMockObjectNewDTO();
+        Usuario usuario = modelMapper.map(usuarioMockado, Usuario.class);
+        when(usuarioRepository.findByCpf(usuarioMockado.getCpf())).thenReturn(usuario);
 
         Throwable throwable = Assertions.catchThrowable(() -> service().inserirNovoUsuario(usuarioMockado));
 

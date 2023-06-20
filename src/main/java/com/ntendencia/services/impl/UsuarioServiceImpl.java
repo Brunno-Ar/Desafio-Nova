@@ -55,14 +55,13 @@ public class UsuarioServiceImpl implements UsuarioService {
                     Utils.getMensagemValidacao("cpf.cadastrado"));
         }
         return usuarioRepository.save(usuario);
-
     }
 
     @Override
-    public Usuario atualizarUsuario(Usuario obj) {
+    public void atualizarUsuario(Usuario obj) {
         Usuario newObj = buscarUsuarioPorId(obj.getId());
         atualizaObjeto(newObj, obj);
-        return usuarioRepository.save(newObj);
+        usuarioRepository.save(newObj);
     }
 
     @Override
@@ -78,7 +77,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public List<Usuario> buscarTodosOsUsuarios() {
-
         return usuarioRepository.findAll();
     }
 
@@ -90,7 +88,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Usuario inserirObjetoPeloDTO(UsuarioDTO objDto) {
-
         return modelMapper.map(objDto, Usuario.class);
     }
 

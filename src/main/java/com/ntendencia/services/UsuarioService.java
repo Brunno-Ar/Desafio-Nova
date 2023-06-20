@@ -26,10 +26,11 @@ public interface UsuarioService {
 
     /**
      * Atualiza as informações do usuario
-     * @param obj   Objeto do usuario que será atualizado
+     *
+     * @param obj Objeto do usuario que será atualizado
      */
 
-    Usuario atualizarUsuario(Usuario obj);
+    void atualizarUsuario(Usuario obj);
 
     /**
      * Deleta o usuario

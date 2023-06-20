@@ -48,7 +48,7 @@ public class UsuarioResource {
     @PutMapping(value = "/{id}")
     @ApiOperation(value = "Atualizar usuario",
             notes = "Modifica dados de um usuario na lista.",
-            tags = {"inserir", "atualizar"})
+            tags = {"atualizar"})
     public ResponseEntity<String> atualizarUsuario(@Valid @RequestBody UsuarioDTO objDto, @PathVariable Integer id) {
         Usuario obj = service.inserirObjetoPeloDTO(objDto);
         obj.setId(id);
