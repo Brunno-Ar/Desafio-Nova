@@ -2,8 +2,10 @@ package com.ntendencia.services.impl;
 
 import com.ntendencia.domain.Usuario;
 import com.ntendencia.domain.enums.SexoUsuario;
+import com.ntendencia.dto.CepDTO;
 import com.ntendencia.dto.UsuarioDTO;
 import com.ntendencia.dto.UsuarioNewDTO;
+import com.ntendencia.http.CepServiceRepository;
 import com.ntendencia.repositories.UsuarioRepository;
 import com.ntendencia.services.UsuarioService;
 import com.ntendencia.services.Utils;
@@ -24,16 +26,17 @@ import java.util.Optional;
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
     private final UsuarioRepository usuarioRepository;
-
+    private final CepServiceRepository cepServiceRepository;
 
     private final ModelMapper modelMapper = new ModelMapper();
 
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository) {
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, CepServiceRepository cepServiceRepository) {
         this.usuarioRepository = usuarioRepository;
+        this.cepServiceRepository = cepServiceRepository;
     }
 
-    private Usuario buscarPorCPF(Usuario objDTO) {
-        return usuarioRepository.findByCpf(objDTO.getCPF());
+    private Usuario buscarPorCPF(String cpf) {
+        return usuarioRepository.findByCpf(cpf);
     }
 
     @Override
@@ -49,11 +52,17 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     @Transactional
     public Usuario inserirNovoUsuario(UsuarioNewDTO usuarioNewDTO) {
-        Usuario usuario = modelMapper.map(usuarioNewDTO, Usuario.class);
-        if (Objects.nonNull(buscarPorCPF(usuario))) {
+        CepDTO endereco = cepServiceRepository.buscarCep(usuarioNewDTO.getEnderecoDTO().getCep());
+        if (Objects.nonNull(buscarPorCPF(usuarioNewDTO.getCpf()))) {
             throw new IntegridadeDeDadosException(
                     Utils.getMensagemValidacao("cpf.cadastrado"));
         }
+        if(endereco != null) {
+            usuarioNewDTO.getEnderecoDTO().setBairro(endereco.getBairro());
+            usuarioNewDTO.getEnderecoDTO().setEstado(endereco.getUf());
+            usuarioNewDTO.getEnderecoDTO().setLogradouro(endereco.getLogradouro());
+        }
+        Usuario usuario = modelMapper.map(usuarioNewDTO, Usuario.class);
         return usuarioRepository.save(usuario);
     }
 

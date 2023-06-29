@@ -7,6 +7,7 @@ import com.ntendencia.domain.Usuario;
 import com.ntendencia.domain.enums.SexoUsuario;
 import com.ntendencia.dto.UsuarioDTO;
 import com.ntendencia.dto.UsuarioNewDTO;
+import com.ntendencia.http.CepServiceRepository;
 import com.ntendencia.repositories.CidadeRepository;
 import com.ntendencia.repositories.EstadoRepository;
 import com.ntendencia.repositories.UsuarioRepository;
@@ -52,6 +53,9 @@ public class UsuarioServiceTest {
     private UsuarioRepository usuarioRepository;
 
     @MockBean
+    private CepServiceRepository cepServiceRepository;
+
+    @MockBean
     private CidadeRepository cidadeRepository;
 
     @MockBean
@@ -63,7 +67,7 @@ public class UsuarioServiceTest {
     private UsuarioServiceImpl service;
 
     private UsuarioService service(){
-        return new UsuarioServiceImpl(usuarioRepository);
+        return new UsuarioServiceImpl(usuarioRepository, cepServiceRepository);
     }
 
     protected static final String MOCK_FOLDER = "/usuarioMock";

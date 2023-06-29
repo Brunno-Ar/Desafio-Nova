@@ -3,23 +3,37 @@ package com.ntendencia.dto;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
-public class EnderecoDTO implements Serializable {
+public class CepDTO implements Serializable {
     private String bairro;
     private String numero;
     @NotEmpty(message = "{cep.obrigatorio}")
     private String cep;
     private String complemento;
-    private String estado;
+    private String localidade;
+    private String uf;
     private String logradouro;
-    private Integer cidadeId;
-
-
     public String getBairro() {
         return bairro;
     }
 
     public void setBairro(String bairro) {
         this.bairro = bairro;
+    }
+
+    public String getLocalidade() {
+        return localidade;
+    }
+
+    public void setLocalidade(String localidade) {
+        this.localidade = localidade;
+    }
+
+    public String getUf() {
+        return uf;
+    }
+
+    public void setUf(String uf) {
+        this.uf = uf;
     }
 
     public String getNumero() {
@@ -38,13 +52,6 @@ public class EnderecoDTO implements Serializable {
         this.cep = cep;
     }
 
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
 
     public String getComplemento() {
         return complemento;
@@ -52,14 +59,6 @@ public class EnderecoDTO implements Serializable {
 
     public void setComplemento(String complemento) {
         this.complemento = complemento;
-    }
-
-    public Integer getCidadeId() {
-        return cidadeId;
-    }
-
-    public void setCidadeId(Integer cidadeId) {
-        this.cidadeId = cidadeId;
     }
 
     public String getLogradouro() {
