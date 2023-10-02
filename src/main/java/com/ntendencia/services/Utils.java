@@ -15,7 +15,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class Utils {
-    private static final  ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+    private static final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     private Utils() {
         throw new IllegalStateException("Utility class");
@@ -51,5 +51,13 @@ public class Utils {
     @SuppressWarnings("unchecked")
     public static <T> List<T> getMockObjectList(String mockFolder, String fileName, Class<T> targetClazz) {
         return (List<T>) doGetMockObject(mockFolder, fileName, targetClazz, List.class);
+    }
+
+    public static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
